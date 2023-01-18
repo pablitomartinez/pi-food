@@ -1,17 +1,13 @@
 const {Router} = require('express');
 const router = Router();
 
-router.get('/', (req,res)=>{
-    res.status(200).send('estoy en el get de recipes')
-});
+const { getRecipesApi, getDbRecipes, getRecipeById, createRecipe } = require('../handlers/recipesHandler')
 
-router.get('/:id', (req,res)=>{
-    res.status(200).send('estoy en detail por id de recipes')
-});
+router.get('/', getRecipesApi);
 
-router.post('/', (req,res)=>{
-    res.status(200).send('creando una receta')
-});
+router.get('/:id', getRecipeById);
+
+router.post('/', createRecipe);
 
 module.exports = router;
 
