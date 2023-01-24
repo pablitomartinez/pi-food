@@ -1,5 +1,5 @@
 // funciones que si interactuan con el modelo
-const { Recipe } = require('../db');
+const { Recipe, Diet } = require('../db');
 const axios = require("axios");
 const {apiKey} = process.env
 
@@ -10,7 +10,9 @@ const cleanArray = (arr)=>{
     const clean = arr.map(elem =>{
         return{
             id: elem.id,
+            image: elem.image,
             name: elem.title,
+            dishTypes: elem.dishTypes,
             summary: elem.summary,
             healthScore: elem.healthScore,
             stepByStep: elem.analyzedInstructions[0]?.steps.map(e => {
@@ -74,13 +76,22 @@ const getAllRecipes = async ()=>{
     return allRecipes
 };
 
-// CREA RECETA EN BD
-const createRecipe = async (name, summary, healthScore, stepByStep )=>{
+// CREA RECETA EN BDz
+const createRecipe = async ( name, summary, healthScore, stepByStep,dietTypes )=>{
 
-    const newRecipe = await Recipe.create({name, summary, healthScore, stepByStep});
+    let newRecipe = await Recipe.create({
+        name, 
+        summary, 
+        healthScore, 
+        stepByStep});
 
-    
+    let recipeDb = await Diet.findAll({
+        where: {name: dietTypes}
+    })
 
+    newRecipe.addDiet(recipeDb)
+
+    console.log('NUEVA RECETA',newRecipe);
     return newRecipe;
 }
 
