@@ -88,6 +88,7 @@ const createRecipe = async ( name, summary, healthScore, stepByStep,dietTypes )=
     let recipeDb = await Diet.findAll({
         where: {name: dietTypes}
     })
+    
 
     newRecipe.addDiet(recipeDb)
 
