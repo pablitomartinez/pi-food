@@ -1,0 +1,30 @@
+.filterSort {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: white;
+    height: 10vh;
+  }
+.filterSort option{
+    font-size:25px;
+}
+  
+.filterSort span {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    margin-right: 0.3rem;
+  }
+  
+.filterSort select {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    width: 5vw;
+    height: 4vh;
+    margin-right: 1.5rem;
+    border-radius: 5px;
+}
+
+.filterselect {
+    width: 10vw !important;
+}

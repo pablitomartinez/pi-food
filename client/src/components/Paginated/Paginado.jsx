@@ -1,22 +1,27 @@
 import React from "react";
+import p from './Paginado.module.css';
 
-export default function Paginado({recipeForPage, allRecipes, paginado}){
-    const pagNumbers = []
-
+const Paginado = ({recipeForPage, allRecipes, paginado})=>{
+    const pagNumbers = [];
+    
     for(let i = 0; i <= Math.ceil(allRecipes/recipeForPage); i++ ){
-        pagNumbers.push(i)
+        pagNumbers.push(i + 1)
     }
 
-
     return(
-        <nav>
-            <ul>
-                { pagNumbers &&
-                
-                
-                
-                }
-            </ul>
-        </nav>
+        <div className={p.container} >
+    
+                <ul>
+                    { pagNumbers &&
+                    pagNumbers.map( number =>(                    
+                        <li key={number} >
+                            <a onClick={() => paginado(number)} > {number} </a>
+                        </li>
+                    ))  
+                    }
+                </ul>   
+        </div>
     )
 }
+
+export default Paginado

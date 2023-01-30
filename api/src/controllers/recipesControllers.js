@@ -12,6 +12,7 @@ const cleanArray = (arr)=>{
             id: elem.id,
             image: elem.image,
             name: elem.title,
+            diets: elem.diets,
             dishTypes: elem.dishTypes,
             summary: elem.summary,
             healthScore: elem.healthScore,
@@ -21,9 +22,6 @@ const cleanArray = (arr)=>{
                     step: e.step
                 }
             }),
-            // name: elem.name,
-            // email: elem.email,
-            // phone: elem.phone,
             created: false
 
         }
@@ -34,13 +32,12 @@ const cleanArray = (arr)=>{
 // TRAE RECETAS DE LA API
 const getApiRecipes = async ()=>{
     const apiInfo = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`)).data.results;
-
     apiInfo.map(e => {
         return{
             id: e.id,
             image: e.image,
             name: e.title,
-            dietTypes: e.diets,
+            diets: e.diets,
             summary: e.summary,
             score: e.spoonacularScore,
             healthScore: e.healthScore,
@@ -53,6 +50,7 @@ const getApiRecipes = async ()=>{
             })
         }
     })
+    console.log('API INFO -->', apiInfo);
     return apiInfo
 }
 

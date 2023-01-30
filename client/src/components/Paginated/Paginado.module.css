@@ -1,0 +1,35 @@
+.container{
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+ul{
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100px;
+    height: 50px;
+    line-height: 50px;
+}
+
+
+
+.container a {
+    text-align: center;
+    background-color: aqua;
+    font-size: 20px;
+    font-weight: 700;
+    transition: .2s linear;
+    border-radius: 50px;
+}
+
+.container a:hover{
+    color: white;
+    background-color: blueviolet;
+}

@@ -2,7 +2,9 @@ import axios from 'axios';
 
 export const GET_RECIPES = "GET_RECIPES";
 export const GET_RECIPE_DETAIL = "GET_RECIPE_DETAIL";
-export const GET_DIETS = 'GET_DIETS'
+export const GET_DIETS = "GET_DIETS";
+export const FILTER_BY_VALUE = "FILTER_BY_VALUE";
+export const SORTED_RECIPES = 'SORTED_RECIPES'
 
 
 export const getRecipes = ()=>{
@@ -39,6 +41,22 @@ export const getDiets = ()=>{
             payload: diets
         })
 
+    }
+}
+
+export const filterRecipesaByStatus = (payload)=>{
+    // console.log(payload);
+    return{
+        type: FILTER_BY_VALUE,
+        payload
+    }
+}
+
+export const sortedRecipes = (payload)=>{
+    console.log(payload);
+    return{
+        type: SORTED_RECIPES,
+        payload
     }
 }
 
