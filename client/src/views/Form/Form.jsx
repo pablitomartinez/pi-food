@@ -67,95 +67,101 @@ const Form =() =>{
 	};
     
     return(
-        <div>
-        <h2>Crea tu receta</h2>
-        <div>
-
         <form 
             className={f.container} 
             onSubmit={submitHandler}
             >
-            
-            <div className={f.name} >
-                <label>Nombre del Plato:
-                    <input 
-                        type='text' 
-                        name="title"
-                        value={form.title}
-                        onChange={changeHandler}   
-                        />
-                </label>
-            </div>
-            
-            <div>
-                <label>Resumen del Plato: 
-                    <textarea 
-                        type='text' 
-                        name="summary"
-                        value={form.summary}
-                        onChange={changeHandler}
-                        />
-                </label>
-            </div>
-            
-            <div>
-                <label>Puntaje de Salud: 
-                    <input type='range' 
-                            min="0" 
-                            max="100"
-                            name="healthScore"
-                            value={form.healthScore}
-                            onChange={changeHandler}
-
-                    />
-                </label>
-            </div>
-            
-            <div>
-                <label>Paso a paso:
-                    <textarea 
-                        type='text' 
-                        name="stepByStep"
-                        value={form.stepByStep}
-                        onChange={changeHandler}
-                        />
-                </label>
-            </div>
-
-            <div>
-                <label>Imagen del plato:
-                    <input type='image' name="image"/>
-                </label>
-            </div>
-     
-        <div className={f.container}>
-            <div>
-                    <h4>Tipos de Dieta:</h4>
-                <div className={f.diets}>
-                    {
-                        diets.length > 0 &&
-                            diets.map((e) =>(
-                                <label 
-                                    key={e} >
-                                    <input
-                                        type='checkbox'
-                                        key={e}
-                                        name={e}
-                                        onChange={handleChecked}
-                                        value={form.diets}
-                                /> 
-                                {e}
-                                </label>  
-                        ))
-                }
+        <h2>Crea tu receta</h2>
+        <div className={f.column} >
+            <div className={f.left} >
+                <div className={f.name} >
+                    <label>Nombre del Plato:
+                        <input 
+                            type='text' 
+                            name="title"
+                            value={form.title}
+                            onChange={changeHandler}   
+                            />
+                    </label>
                 </div>
+                
+                <div>
+                    <label>Resumen del Plato: 
+                        <textarea 
+                            type='text' 
+                            name="summary"
+                            value={form.summary}
+                            onChange={changeHandler}
+                            />
+                    </label>
+                </div>
+                
+                <div>
+                    <label>Puntaje de Salud: 
+                        <input type='range' 
+                                min="0" 
+                                max="100"
+                                name="healthScore"
+                                value={form.healthScore}
+                                onChange={changeHandler}
+
+                        />
+                    </label>
+                </div>
+                
+                <div>
+                    <label>Paso a paso:
+                        <textarea 
+                            type='text' 
+                            name="stepByStep"
+                            value={form.stepByStep}
+                            onChange={changeHandler}
+                            />
+                    </label>
+                </div>
+
+                <div>
+                    <label>Imagen del plato:
+                        <input type='image' name="image"/>
+                    </label>
+                </div>
+                
             </div>
+            
+            
+            <div className={f.right} >
+
+                <div className={f.container}>
+                    <div>
+                            <h4>Tipos de Dieta:</h4>
+                        <div className={f.diets}>
+                            {
+                                diets.length > 0 &&
+                                    diets.map((e) =>(
+                                        <label 
+                                            key={e} >
+                                            <input
+                                                type='checkbox'
+                                                key={e}
+                                                name={e}
+                                                onChange={handleChecked}
+                                                value={form.diets}
+                                        /> 
+                                        {e}
+                                        </label>  
+                                ))
+                        }
+                        </div>
+                    </div>
+                </div>
+                <br/>
+            </div>
+
         </div>
-        <br/>
-            <button type="submit" >CREAR RECETA</button>
+        
+        <button type="submit" >CREAR RECETA</button>
+
         </form>
-        </div>
-        </div>
     )
 }
 

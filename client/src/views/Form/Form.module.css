@@ -3,6 +3,24 @@
 	flex-direction: column;
 	font-size: 20px;
 }
+
+.column{
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.left{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.right{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
 .diets{
     display: flex;
 	flex-direction: column;

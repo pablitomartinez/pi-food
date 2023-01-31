@@ -15,7 +15,7 @@ function App() {
       
       <Route exact path={'/home'} component={Home}/>
 
-      <Route exact path={'/details'} component={Details}/>
+      <Route exact path={'/details/:id'} component={Details} />
       
       <Route exact path={'/create'} component={Form}/>
 

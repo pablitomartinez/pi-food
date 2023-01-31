@@ -1,4 +1,4 @@
-import { GET_RECIPES, GET_DIETS, FILTER_BY_VALUE, SORTED_RECIPES} from './actions'
+import { GET_RECIPES, GET_DIETS, FILTER_BY_VALUE, SORTED_RECIPES, GET_RECIPE_DETAIL} from './actions'
 // ? ESTADO GLOBAL 
 const initialState = {
     
@@ -2326,7 +2326,7 @@ const initialState = {
         "ketogenic",
         "primal"
     ],
-        
+    recipeDetails: [],
     
     stepByStep:[]
     // stepByStep: [{
@@ -2360,23 +2360,29 @@ const rootReducer = (state = initialState, action) => {
                 recipes: action.payload,
                 allRecipes: action.payload
             }
+
         case GET_DIETS:
             return{
                 ...state,
                 diets: action.payload
             }
+
         case FILTER_BY_VALUE:
 			const allRecipes = state.allRecipes;
             const recipesFilterd =  allRecipes.filter(r => r.diets?.some(d => d.toLowerCase() === action.payload.toLowerCase()))
-           
-
             return{
                 ...state,
                 recipes: recipesFilterd
             }
+
+		case GET_RECIPE_DETAIL:
+			return{
+				...state,
+				recipeDetails: action.payload
+			}
+
 		case SORTED_RECIPES:
-			let sortedRecipes = [...state.recipes]
-			sortedRecipes = action.payload === 'asc' ?
+			let sortedRecipes = action.payload === 'asc' ?
           	state.recipes.sort(function(a, b) {
             if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
             if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
@@ -2391,6 +2397,7 @@ const rootReducer = (state = initialState, action) => {
             ...state,
             recipes: sortedRecipes
           };
+
         default:
             return {...state}
     }

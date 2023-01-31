@@ -9,30 +9,30 @@ const CardsContainer = ({currentRecipes, recipeForPage, allRecipes, paginado })=
 
 
     return(
-        <div>
+        <div className={s.cards}>
 
             <Paginado 
                 recipeForPage={recipeForPage}
                 allRecipes = {allRecipes.length}
                 paginado= {paginado}
-            />
-            
-            <div className={s.container}> 
-                    {currentRecipes &&
-                        currentRecipes.map(e =>{
-                        return <Card 
+            />     
+                <div className={s.container}>       
+                        {currentRecipes &&
+                            currentRecipes.map(e =>{
+                            return <Card 
                             key={e.id}
                             id={e.id}
                             name={e.name}
-                            image={e.image}
-                            summary={e.summary}
-                            healthScore={e.healthScore}
-                            stepByStep={e.stepByStep}
-                            diets={e.diets}
-                            dishTypes={e.dishTypes}
-                            created={e.created}
-                        />
-                    })}     
+                                image={e.image}
+                                summary={e.summary}
+                                healthScore={e.healthScore}
+                                stepByStep={e.stepByStep}
+                                diets={e.diets}
+                                dishTypes={e.dishTypes}
+                                created={e.created}
+                                />
+                            })
+                        }     
             </div>
         </div>
     )

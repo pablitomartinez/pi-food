@@ -20,6 +20,18 @@ export const getRecipes = ()=>{
     };
 } 
 
+export const getRecipeDetail = (id)=>{
+    return async function (dispatch){
+        let apiData = await axios.get(`http://localhost:3001/recipes/${id}`)
+        let recipeDetail = apiData.data
+        // console.log('FUNCION DETAIL', recipeDetail);
+        dispatch({
+            type: GET_RECIPE_DETAIL,
+            payload: recipeDetail
+        })
+    }
+}
+
 export const getRecipeById = (id)=>{
     return async function (dispatch){
         let apiData = await axios.get(`http://localhost:3001/recipes/${id}`)
@@ -52,11 +64,12 @@ export const filterRecipesaByStatus = (payload)=>{
     }
 }
 
-export const sortedRecipes = (payload)=>{
+export const sortedRecipesByName = (payload)=>{
     console.log(payload);
     return{
         type: SORTED_RECIPES,
         payload
     }
 }
+
 

@@ -1,17 +1,14 @@
-import { useHistory } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 
-const Landing =() =>{
-    const history = useHistory()
+const Landing = () =>{
     
-    // ! REVISAR
-    const getIn = (e)=>{
-        history.push('/home')
-    }
     return(
         <>
             <h1>estas en LANDING</h1>
-            <button type="submit" onChange={getIn}>GET IN</button>
+            <Link to={'/home'} >
+            <button type="submit">GET IN</button>
+            </Link>
         </>
     )
 }

@@ -1,9 +1,9 @@
 import filter from './Filter.module.css'
-import { filterRecipesaByStatus, sortedRecipes } from '../../redux/actions'
+import { filterRecipesaByStatus, sortedRecipesByName } from '../../redux/actions'
 import { useDispatch } from 'react-redux'
  
 
-const Filter = ()=>{
+const Filter = ({setCurrentPage, setOrder})=>{
 
     const dispatch = useDispatch()
 
@@ -12,7 +12,10 @@ const Filter = ()=>{
     }
 
 	const handlerSort = (e)=>{
-        dispatch(sortedRecipes(e.target.value))
+		
+        dispatch(sortedRecipesByName(e.target.value))
+		setCurrentPage(1)
+		setOrder(`Ordenado de ${e.target.value}`)
     }
 
     return(
@@ -20,10 +23,7 @@ const Filter = ()=>{
             <div className={filter.filterSort}>
 				<div>
 					<span>Sort:</span>
-                    <select 
-						onChange={e => handlerSort(e)}
-						>
-						<option value='All'>All</option>
+                    <select onChange={e => handlerSort(e)}>
 						<option value='asc'>A-Z</option>
 						<option value='des'>Z-A</option>
 					</select>

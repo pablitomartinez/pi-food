@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getRecipes } from "../../redux/actions";
+import { getRecipes, getRecipeDetail } from "../../redux/actions";
 import CardsContainer from "../../components/CardsContainer/CardsContainer";
 import Paginado from "../../components/Paginated/Paginado";
 import Filter from "../../components/Filters/Filter";
@@ -12,11 +12,13 @@ const Home =() =>{
 
     const allRecipes = useSelector(state => state.recipes) 
     // console.log('ALL RECIPES', allRecipes);
+    
 
     useEffect(()=>{
         dispatch(getRecipes())
     }, [])
-    
+
+
     // -PAGINADO-
     // pag actual - set pag actual
     const [currentPage, setCurrentPage] = useState(1);
@@ -30,6 +32,9 @@ const Home =() =>{
         // 
     const currentRecipes = allRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe)
     // console.log('RECETAS ACTUALES-->',currentRecipes);
+
+    //estado con msj que setea el orden
+    const [order, setOrder] = useState('')
 
     const paginado = (pagNumber) =>{
         setCurrentPage(pagNumber)
@@ -45,7 +50,11 @@ const Home =() =>{
         //     />
     return(
         <>
-        <Filter/>
+        <Filter
+            setCurrentPage={setCurrentPage}
+            setOrder={setOrder}
+
+        />
         <CardsContainer
             currentRecipes={currentRecipes}
             recipeForPage={recipeForPage}
