@@ -1,9 +1,89 @@
 .card{
-    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* width: 300px;
+    height: 400px; */
+    color: whitesmoke;
+    border: 2px solid whitesmoke;
     border-radius: 10px;
     padding: 10px;
-
-    background-position: center center; 
-    /* 
-    */
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
+
+
+/* .card .front{
+    height: 100%;
+
+} */
+
+.card .back input{
+    padding: 10px 50px;
+    border: none;
+    font-size: 16px;
+    border-radius: 50px;
+    margin-top: 40px;
+    background: linear-gradient(to right, #fab2b2, #f54d4d);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 1px 1px 30px -12px #f54d4d;
+    transition: all 300ms;
+}
+
+/*
+.card div {
+    position: absolute;
+    width: 100%;
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    transition: 2s;
+}
+.card .front {
+    transform: perspective(500px) rotateY(0deg);
+    box-shadow: whitesmoke
+}
+
+.card .front h3 {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    color: whitesmoke;
+    background: rgba(244, 236, 236, 0.4);
+    text-align: center;
+}
+
+
+.card .front img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+
+
+.card .back {
+    display: flex;
+    justify-content: space-between;
+    background: #682fc4;
+    transform: perspective(500px) rotateY(180deg);
+}
+
+.card:hover .front{
+    transform: perspective(500px) rotateY(180deg) ;
+}
+
+.card:hover .front{
+    transform: perspective(500px) rotateY(360deg) ;
+}
+
+*/

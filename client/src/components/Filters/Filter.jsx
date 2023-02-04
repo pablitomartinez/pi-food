@@ -1,6 +1,7 @@
 import filter from './Filter.module.css'
 import { filterRecipesaByDiets, sortedRecipes, sortScore } from '../../redux/actions'
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
  
 
 const Filter = ({ setCurrentPage, setOrder})=>{
@@ -32,6 +33,7 @@ const Filter = ({ setCurrentPage, setOrder})=>{
 					<span>Sort:</span>
                     <select 
 						onChange={e => handlerSort(e)}
+						className={filter.filterselect}
 						>
 						<option value='All'>All</option>
 						<option value='asc'>A-Z</option>
@@ -39,7 +41,10 @@ const Filter = ({ setCurrentPage, setOrder})=>{
 					</select>
 
 					<span>Order: </span>
-					<select onChange={e => handleScoreSort(e)}>
+					<select 
+						onChange={e => handleScoreSort(e)}
+						className={filter.filterselect}
+						>
 						<option value='All'>Health Score</option>
 						<option value='unhealthy'>Healthy +50</option>
 						<option value='healthy'>Unhealthy -50</option>
@@ -67,6 +72,10 @@ const Filter = ({ setCurrentPage, setOrder})=>{
 						<option value='primal'>Primal</option>
 						<option value='whole 30'>Whole30</option>;
 					</select>
+
+					<Link to={'/create'}>
+						<input type='button' value='Crear Receta'/>
+					</Link>
 
 				</div>
             </div>

@@ -1,10 +1,10 @@
 .container{
-    background-color: whitesmoke;
     display: flex;
     flex-direction: row;
     justify-content: center;
     position: relative;
     overflow: hidden;
+    padding: 8px;
 }
 
 ul{
@@ -18,18 +18,22 @@ ul{
     line-height: 50px;
 }
 
+.container li{
+    width: 5vw;
+    height: 5vh;
+    transition: .2s linear;
+}
 
 
-.container a {
+
+.container li {
     text-align: center;
-    background-color: aqua;
     font-size: 20px;
     font-weight: 700;
-    transition: .2s linear;
     border-radius: 50px;
 }
 
-.container a:hover{
+.container li:hover{
     color: white;
-    background-color: blueviolet;
+    background: linear-gradient(to right, #fab2b2, #f54d4d);
 }

@@ -2,17 +2,17 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color: white;
-    height: 10vh;
+    background-color: rgba(255, 255, 255, 0.041);
+    height: 5vh;
   }
 .filterSort option{
-    font-size:25px;
+    font-size:15px;
 }
   
 .filterSort span {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     text-transform: uppercase;
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-right: 0.3rem;
   }
   
@@ -26,5 +26,20 @@
 }
 
 .filterselect {
-    width: 10vw !important;
+    width: 12vw !important;
+}
+
+
+.filterSort  input{
+  padding: 10px 50px;
+  border: none;
+  font-size: 16px;
+  border-radius: 50px;
+  margin-top: 40px;
+  background-image: linear-gradient(55deg, #ffffff 0, #eae4ff 25%, #bcbaef 50%, #8394e1 75%, #2b75d4 100%);
+  color: black;
+  cursor: pointer;
+  
+  transition: all 300ms;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }

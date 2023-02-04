@@ -9,7 +9,7 @@ const CardsContainer = ({currentRecipes, recipeForPage, allRecipes, paginado })=
 
 
     return(
-        <div>
+        <div className={s.cards} >
 
             <Paginado 
                 recipeForPage={recipeForPage}

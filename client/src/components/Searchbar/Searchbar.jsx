@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
-import { getRecipeByName } from '../../redux/actions';
-
+import { getRecipeByName, getRecipes} from '../../redux/actions';
+import s from './Searchbar.module.css'
 const Searchbar =()=>{
     const dispatch = useDispatch()
     const [name, setName] = useState('')
@@ -18,18 +18,28 @@ const Searchbar =()=>{
         dispatch(getRecipeByName(name))
     }
 
+    const loadRecipes = (e)=>{
+        dispatch(getRecipes(e))
+    }
+
     return(
         <div>
             <input
+                className={s.search}
                 type='text'
-                placeholder='Buscar...'
+                placeholder='Buscar receta...'
                 onChange={(e)=> handleInputChange(e)}
             />
             <button
+                className={s.searchh}
                 type="submit"
                 onClick={(e)=> handleSubmit(e)}
             >   Buscar
             </button>
+
+            <button 
+                className={s.refresh}
+                onClick={(e)=> loadRecipes(e)}> Volver a cargar Recetas</button>
 
         </div>
     )

@@ -11,7 +11,7 @@ const Form =() =>{
         name: "",
         summary: '',
         healthScore: '',
-        stepByStep: '',
+        stepByStep: [],
         diets: [],
         image: '',
         
@@ -21,7 +21,7 @@ const Form =() =>{
         name: "",
         summary: '',
         healthScore: '',
-        stepByStep: '',
+        stepByStep: [],
         diets: [],
         image: '',
     })
@@ -66,9 +66,17 @@ const Form =() =>{
             [property]:value
         });
 
-        validate()
+        // validate()
     }
-
+    
+    const handleStep = (e)=>{
+        if(form.stepByStep){
+            setForm({
+                ...form,
+                stepByStep:[...form.stepByStep, e.target.name]
+            })
+        }
+    }
     
     
     // ! REVISAR
@@ -77,7 +85,7 @@ const Form =() =>{
 			setForm({
 				...form,
 				diets: [...form.diets, e.target.name],
-			});
+			})
 		} else {
             setForm({
                 ...form,
@@ -85,33 +93,26 @@ const Form =() =>{
 			});
 		}
 	};
+
     
     
     const submitHandler = (e)=>{
-        // e.preventDefault()
-        // axios.post('http://localhost:3001/recipes', form)
-        // .then( res => alert(res))
-        // .catch( err => alert(err) )
-        
-        // console.log(form);
-        // setForm({
-        //     title: "",
-        //     summary: '',
-        //     healthScore: '',
-        //     diets: [],
-        //     stepByStep: '',
-        //     image: '',
-        // })
-        
-        // .then( res => alert(res))
-        // history.push('/home')
-        // ? -----------------------------------
-
         e.preventDefault();
         console.log(form);
         dispatch(postRecipe(form))
         alert("Congratulations, you created a recipe :)")
     }
+
+    const crearPaso = (e)=>{
+        if(e.target.stepByStep){
+            setForm({
+				...form,
+				stepByStep: form.stepByStep.push(e.target.value),
+			})
+        }
+    }
+    
+    
     return(
         <div>
         <h2>Crea tu receta</h2>
@@ -158,12 +159,14 @@ const Form =() =>{
             
             <div>
                 <label htmlFor="stepByStep" >Paso a paso: </label>
-                    <textarea 
+                    <input 
                         type="text"
                         name="stepByStep"
                         value={form.stepByStep}
                         onChange={handleFormChange}
                         />
+                    <button onChange={crearPaso}> Crear Paso </button>  
+                    {} 
             </div>
             
             <div>
@@ -203,6 +206,12 @@ const Form =() =>{
         {/* <Link to={'/home'} > */}
             <button type="submit" >CREAR RECETA</button>
         {/* </Link> */}
+        <div className='lista-tarea-principal' >
+            <h1>Tu receta paso a paso:</h1>
+      
+        </div>
+
+   
         </form>
         </div>
         </div>

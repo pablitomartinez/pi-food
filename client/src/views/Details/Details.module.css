@@ -1,0 +1,19 @@
+.name{
+    font-size: 30px;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    margin: auto;
+    gap: 20px;
+    
+}
+
+.right{
+    border-left: 0.5px solid whitesmoke;
+    padding-left: 50px;
+    width: 25%;
+}

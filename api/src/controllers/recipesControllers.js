@@ -6,7 +6,7 @@ const {apiKey} = process.env
 
 // ? FUNCION NORMALIZADORA
 const cleanArray = (arr)=>{
-    // console.log(arr);
+    // console.log('arr', arr);
     const clean = arr.map(e =>{
         return{
             id: e.id,
@@ -26,12 +26,13 @@ const cleanArray = (arr)=>{
 
         }
     })
+    console.log("CLEAAAAN", clean);
     return clean
 }
 
 // TRAE RECETAS DE LA API
 const getApiRecipes = async ()=>{
-    const apiInfo = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`)).data.results;
+    const apiInfo = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=10`)).data.results;
     
     apiInfo.map(e => {
         return{
@@ -61,26 +62,19 @@ const getApiRecipes = async ()=>{
 //      BD
 const getAllRecipes = async ()=>{
     // BD
-    const recipesDb = await Recipe.findAll({
-        include:{
-            model: Diet,
-            attributes:['name'],
-            through:{
-                attributes:[],
-            }
-        }
-    });
+    const recipesDb = await Recipe.findAll();
     // API (crudo)
     const recipesApiRaw = await getApiRecipes()
-    // console.log('RECETAS --->',recipesApiRaw);
+    console.log('RECETAS --->',recipesApiRaw);
        
     // ? FUNCION NORMALIZADORA
     const recipesApi = cleanArray(recipesApiRaw)
-    // console.log(recipesApi);
+    console.log('RECETAS API',recipesApi);
 
     const allRecipes = [...recipesDb, ...recipesApi]
 
     return allRecipes
+
 };
 
 // CREA RECETA EN BDz

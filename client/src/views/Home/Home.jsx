@@ -4,7 +4,6 @@ import { getRecipes } from "../../redux/actions";
 import CardsContainer from "../../components/CardsContainer/CardsContainer";
 import Paginado from "../../components/Paginated/Paginado";
 import Filter from "../../components/Filters/Filter";
-import Searchbar from "../../components/Searchbar/Searchbar";
 
 
 
@@ -38,10 +37,6 @@ const Home =() =>{
         setCurrentPage(pagNumber)
     }
 
-    const loadRecipes = (e)=>{
-        dispatch(getRecipes(e))
-    }
-
     // console.log('COMPONENTE PAGINADO',paginado);
 
 
@@ -52,10 +47,7 @@ const Home =() =>{
         //     />
     return(
         <>
-        <Searchbar/>
-        <button 
-            onClick={(e)=> loadRecipes(e)}
-         >Volver a cargar Recetas</button>
+        
         <Filter
             setCurrentPage={setCurrentPage}
             setOrder={setOrder}
