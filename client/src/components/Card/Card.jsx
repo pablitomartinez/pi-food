@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 
 const Card = (props)=>{
-  // console.log(props);
+  console.log('CARD',  props.id);
   return(
     <div className={s.card}>
 
@@ -15,7 +15,7 @@ const Card = (props)=>{
         
         <div className={s.back}>
           <h4>Tipos de Dietas:</h4>
-          {props.diets.map(e =>{
+          {props.diets && props.diets.map(e =>{
               return(
                   <li key={e}>{e}</li>
               )

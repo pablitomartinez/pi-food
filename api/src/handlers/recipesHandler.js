@@ -24,7 +24,7 @@ const getAllRecipesOrByName = async (req,res) => {
 
 
 const createRecipeHandler = async (req,res) => {
-    let { 
+    const { 
         name, 
         summary, 
         healthScore, 
@@ -34,22 +34,28 @@ const createRecipeHandler = async (req,res) => {
     } = req.body
     
     try {
-        let newRecipe = await createRecipe({ 
-            name, 
-            summary, 
-            healthScore, 
-            stepByStep, 
-            image,
-            diets 
-            })
-            
-            res.status(201).send('Receta creada :)')
-            console.log('NUEVA RECETA handler -->',newRecipe);
-            
-        } catch (error) {
-            console.log(error);
-            res.status(400).json({error: error.message})
+        const newRecipe = await createRecipe(name,summary, healthScore, stepByStep, image, diets)
+        res.status(201).json(newRecipe)
+    } catch (error) {
+        res.status(400).json({error: error.message})
     }
+    // try {
+    //     const newRecipe = await createRecipe({ 
+    //         name, 
+    //         summary, 
+    //         healthScore, 
+    //         stepByStep, 
+    //         image,            
+    //         diets 
+    //         })
+            
+    //         res.status(201).json(newRecipe)
+    //         console.log('NUEVA RECETA handler -->',newRecipe);
+            
+    //     } catch (error) {
+    //         console.log(error);
+    //         res.status(400).json({error: error.message})
+    // }
 }
 
 const getDbRecipesHandler = (req,res) => {

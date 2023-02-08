@@ -11,7 +11,7 @@ router.get('/', getAllRecipesOrByName);
 
 router.get('/:id', getRecipeByIdHandler);
 
-router.post('/', createRecipeHandler);
+router.post('/', validate, createRecipeHandler);
 
 module.exports = router;
 

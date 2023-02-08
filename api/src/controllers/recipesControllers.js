@@ -16,23 +16,18 @@ const cleanArray = (arr)=>{
             dishTypes: e.dishTypes,
             summary: e.summary,
             healthScore: e.healthScore,
-            stepByStep: e.analyzzedInstructions[0]?.steps.map(e => {
-                return {
-                    number: e.number,
-                    step: e.step
-                }
-            }),
+            stepByStep: e.stepByStep,
             created: false
 
         }
     })
-    console.log("CLEAAAAN", clean);
+    console.log("CLEAN", clean);
     return clean
 }
 
 // TRAE RECETAS DE LA API
 const getApiRecipes = async ()=>{
-    const apiInfo = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=10`)).data.results;
+    const apiInfo = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`)).data.results;
     
     apiInfo.map(e => {
         return{
@@ -44,12 +39,10 @@ const getApiRecipes = async ()=>{
             score: e.spoonacularScore,
             healthScore: e.healthScore,
             dishTypes: e.dishTypes,
-            stepByStep: e.analyzedInstructions[0]?.steps.map(e => {
-                return {
-                    number: e.number,
-                    step: e.step
-                }
-            })
+            stepByStep: (  e.analyzedInstructions[0] &&
+                e.analyzedInstructions[0].steps ? 
+                e.analyzedInstructions[0].steps.map(item=>item.step).join(" \n") : 
+                ''),
         }
     })
     // console.log('API INFO -->', apiInfo);
@@ -65,11 +58,11 @@ const getAllRecipes = async ()=>{
     const recipesDb = await Recipe.findAll();
     // API (crudo)
     const recipesApiRaw = await getApiRecipes()
-    console.log('RECETAS --->',recipesApiRaw);
+    // console.log('RECETAS --->',recipesApiRaw);
        
     // ? FUNCION NORMALIZADORA
     const recipesApi = cleanArray(recipesApiRaw)
-    console.log('RECETAS API',recipesApi);
+    // console.log('RECETAS API',recipesApi);
 
     const allRecipes = [...recipesDb, ...recipesApi]
 
@@ -78,26 +71,42 @@ const getAllRecipes = async ()=>{
 };
 
 // CREA RECETA EN BDz
-const createRecipe = async ( name, summary, healthScore, diets, stepByStep, image )=>{
+const createRecipe = async ( name, summary, healthScore, stepByStep, image, diets )=>{
 
-    console.log(stepByStep);
-    console.log('DIETTTSSSSS---->',diets);
-    let newRecipe = await Recipe.create({
-        name, 
-        summary, 
-        healthScore, 
-        stepByStep,
-        image
-    })
-    
+    console.log('ESTO ES DIETS',diets);
+
+    const newRecipe =  await Recipe.create({name, summary, healthScore, stepByStep, image})
+
     let dietDb = await Diet.findAll({
         where: {name: diets}
-    })
+    })    
+
     newRecipe.addDiet(dietDb)
+    console.log('dieta agregada--->',dietDb);
+    console.log('con dieta agregada--->',newRecipe);
+    return newRecipe
+   
+   
+   // ------------------------------------
+   
+    // console.log('NAME',name);
+    // // console.log('DIETTTSSSSS---->',diets);
+    // let newRecipe = await Recipe.create({
+    //     name, 
+    //     summary, 
+    //     // healthScore, 
+    //     // stepByStep,
+    //     // image
+    // })
+    
+    // let dietDb = await Diet.findAll({
+    //     where: {name: diets}
+    // })
+    // newRecipe.addDiet(dietDb)
 
-    console.log('DIET',dietDb);
+    // console.log('DIET',dietDb);
 
-    console.log('NUEVA RECETA controllers',newRecipe);
+    // console.log('NUEVA RECETA controllers',newRecipe);
     return newRecipe;
 }
 
@@ -110,10 +119,12 @@ const getRecipeById = async (id, source)=>{
 
     : await Recipe.findByPk(id);
 
+    // const recipeId = cleanArray(recipe)
+
 
 
     // const recipeClean = cleanArray(recipe)
-    console.log('RECETAS POR ID',recipe);
+    // console.log('RECETAS POR ID',recipe);
     return recipe
 }
 

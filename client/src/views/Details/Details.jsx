@@ -4,21 +4,34 @@ import { getRecipeById } from "../../redux/actions";
 import d from './Details.module.css'
 
 const Details = (props) => {
-  //    console.log('PROPS DE DETAILS', props);
+     console.log('PROPS DE DETAILS', props);
   const dispatch = useDispatch();
 
   const id = props.match.params.id;
 
-  useEffect(() => {
-    dispatch(getRecipeById(id));
-  }, []);
-
   const recipeDetails = useSelector((state) => state.recipeById);
+  
+  useEffect(() => {
+      dispatch(getRecipeById(id));
+    }, []);
+    
+    // console.log('recipeDETAILS',recipeDetails.analyzedInstructions[0].steps);
 
-  const steps = recipeDetails.analyzedInstructions[0].steps;
+  const steps = recipeDetails;
 
   console.log("STEPS", steps);
-  // console.log(recipeDetails.analyzedInstructions);
+
+{/* <h2>Paso a Paso:</h2>
+{steps
+    ? steps.map((e) => {
+        return <h4>
+        <li key={e.number}>{e.step}</li>
+        </h4>
+    })
+    : ""}{" "} */}
+
+
+    // .replace(/<[^>]*>/g, "")
 
   return (
   <div>
@@ -57,20 +70,13 @@ const Details = (props) => {
             <h2> Resumen:</h2>
             <h6>
 
-                {recipeDetails.summary.replace(/<[^>]*>/g, "")} 
+                {recipeDetails.summary} 
             </h6>
             <h2> Nivel de comida saludable:</h2>
             <h4>
                 {recipeDetails.healthScore} 
             </h4>
-            <h2>Paso a Paso:</h2>
-            {steps
-                ? steps.map((e) => {
-                    return <h4>
-                    <li key={e.number}>{e.step}</li>
-                    </h4>
-                })
-                : ""}{" "}
+          
         </div>
 
     </div>

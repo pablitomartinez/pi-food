@@ -26,9 +26,9 @@ export const getRecipes = ()=>{
 export const getRecipeById = (id)=>{
     return async function (dispatch){
         let apiData = await axios.get(`http://localhost:3001/recipes/${id}`)
+        console.log('RECIPEAPIDATA',apiData);
         let recipeDetail = apiData.data
 
-        // console.log(recipeDetail);
 
         dispatch({
             type: GET_RECIPE_DETAIL,
