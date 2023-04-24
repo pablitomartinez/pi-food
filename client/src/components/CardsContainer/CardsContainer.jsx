@@ -5,18 +5,20 @@ import Paginado from "../Paginated/Paginado";
 
 const CardsContainer = ({currentRecipes, recipeForPage, allRecipes, paginado })=>{
     const recipes = useSelector(state => state.recipes)
-    // console.log('current recipes-->', currentRecipes);
+    const diets = useSelector(state => state.diets)
+
+    console.log('RECETAS-->', recipes);
+    console.log('DIETAS-->', diets);
+
 
 
     return(
         <div className={s.cards} >
-
             <Paginado 
                 recipeForPage={recipeForPage}
                 allRecipes = {allRecipes.length}
                 paginado= {paginado}
-            />
-            
+            />        
             <div className={s.container}> 
                     {currentRecipes &&
                         currentRecipes.map(e =>{

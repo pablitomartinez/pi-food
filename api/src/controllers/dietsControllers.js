@@ -10,7 +10,7 @@ const getAllDiets = async ()=>{
         })
     })
     const allTypes = await Diet.findAll()
-    console.log('TODOS LAS DIETS',allTypes);
+    // console.log('TODOS LAS DIETS',allTypes);
     return allTypes
 }
 

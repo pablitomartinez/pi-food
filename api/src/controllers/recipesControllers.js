@@ -27,8 +27,8 @@ const cleanArray = (arr)=>{
 
 // TRAE RECETAS DE LA API
 const getApiRecipes = async ()=>{
-    const apiInfo = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`)).data.results;
-    
+    const apiInfo = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=50`)).data.results;
+    console.log('recetas  >>>', apiInfo.data);
     apiInfo.map(e => {
         return{
             id: e.id,
@@ -73,7 +73,7 @@ const getAllRecipes = async ()=>{
 // CREA RECETA EN BDz
 const createRecipe = async ( name, summary, healthScore, stepByStep, image, diets )=>{
 
-    console.log('ESTO ES DIETS',diets);
+    // console.log('ESTO ES DIETS',diets);
 
     const newRecipe =  await Recipe.create({name, summary, healthScore, stepByStep, image})
 
@@ -82,8 +82,8 @@ const createRecipe = async ( name, summary, healthScore, stepByStep, image, diet
     })    
 
     newRecipe.addDiet(dietDb)
-    console.log('dieta agregada--->',dietDb);
-    console.log('con dieta agregada--->',newRecipe);
+    // console.log('dieta agregada--->',dietDb);
+    // console.log('con dieta agregada--->',newRecipe);
     return newRecipe
    
    
