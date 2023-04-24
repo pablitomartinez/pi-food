@@ -2,6 +2,7 @@ import './App.css';
 import {Details, Form, Home, Landing } from './views'
 import {Route, useLocation} from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
+import Form2 from './views/Form/Form2';
 
 
 function App() {
@@ -18,6 +19,9 @@ function App() {
       <Route exact path={'/details/:id'} component={Details}/>
       
       <Route exact path={'/create'} component={Form}/>
+
+      <Route exact path={'/create2'} component={Form2}/>
+
 
     </div>
   );
