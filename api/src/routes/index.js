@@ -6,6 +6,11 @@ const dietsRouter = require('./dietsRouter.js');
 
 const router = Router();
 
+// Manejar la ruta raíz "/"
+router.get('/', (req, res) => {
+  res.send('¡Bienvenido a la API de Food! desde el enrutador');
+});
+
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 router.use('/recipes',recipesRouter);

@@ -1,7 +1,7 @@
 // funciones que si interactuan con el modelo
 const { Recipe, Diet } = require('../db');
 const axios = require("axios");
-const {apiKey} = process.env
+const { apiKey } = process.env.SPOONACULAR_API_KEY;
 
 
 // ? FUNCION NORMALIZADORA
