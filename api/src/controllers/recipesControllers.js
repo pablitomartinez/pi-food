@@ -1,14 +1,40 @@
 // funciones que si interactuan con el modelo
 const { Recipe, Diet } = require('../db');
 const axios = require("axios");
-const { apiKey } = process.env.SPOONACULAR_API_KEY;
+const  apiKey  = process.env.SPOONACULAR_API_KEY;
 
 
 // ? FUNCION NORMALIZADORA
-const cleanArray = (arr)=>{
-    // console.log(arr);
-    const clean = arr.map(elem =>{
-        return{
+// const cleanArray = (arr)=>{
+//     // console.log(arr);
+//     const clean = arr.map(elem =>{
+//         return{
+//             id: elem.id,
+//             image: elem.image,
+//             name: elem.title,
+//             diets: elem.diets,
+//             dishTypes: elem.dishTypes,
+//             summary: elem.summary,
+//             healthScore: elem.healthScore,
+//             stepByStep: elem.analyzedInstructions[0]?.steps.map(e => {
+//                 return {
+//                     number: e.number,
+//                     step: e.step
+//                 }
+//             }),
+//             created: false
+
+//         }
+//     })
+//     return clean
+// }
+
+
+// ? nueva funcion normalizadora
+// ? FUNCION NORMALIZADORA
+const cleanArray = (arr) => {
+    const clean = arr.map(elem => {
+        return {
             id: elem.id,
             image: elem.image,
             name: elem.title,
@@ -16,24 +42,51 @@ const cleanArray = (arr)=>{
             dishTypes: elem.dishTypes,
             summary: elem.summary,
             healthScore: elem.healthScore,
-            stepByStep: elem.analyzedInstructions[0]?.steps.map(e => {
-                return {
-                    number: e.number,
-                    step: e.step
-                }
-            }),
+            stepByStep: elem.analyzedInstructions && elem.analyzedInstructions[0] && elem.analyzedInstructions[0].steps
+                ? elem.analyzedInstructions[0].steps.map(e => {
+                    return {
+                        number: e.number,
+                        step: e.step
+                    }
+                })
+                : [],  // Devuelve un array vacío si no hay pasos
             created: false
-
         }
-    })
-    return clean
+    });
+    return clean;
 }
 
+
 // TRAE RECETAS DE LA API
-const getApiRecipes = async ()=>{
+// const getApiRecipes = async ()=>{
+//     const apiInfo = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`)).data.results;
+//     apiInfo.map(e => {
+//         return{
+//             id: e.id,
+//             image: e.image,
+//             name: e.title,
+//             diets: e.diets,
+//             summary: e.summary,
+//             score: e.spoonacularScore,
+//             healthScore: e.healthScore,
+//             dishTypes: e.dishTypes,
+//             stepByStep: e.analyzedInstructions[0]?.steps.map(e => {
+//                 return {
+//                     number: e.number,
+//                     step: e.step
+//                 }
+//             })
+//         }
+//     })
+//     console.log('API INFO -->', apiInfo);
+//     return apiInfo
+// }
+// TRAE RECETAS DE LA API
+const getApiRecipes = async () => {
     const apiInfo = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`)).data.results;
-    apiInfo.map(e => {
-        return{
+    
+    const cleanApiInfo = apiInfo.map(e => {
+        return {
             id: e.id,
             image: e.image,
             name: e.title,
@@ -42,16 +95,19 @@ const getApiRecipes = async ()=>{
             score: e.spoonacularScore,
             healthScore: e.healthScore,
             dishTypes: e.dishTypes,
-            stepByStep: e.analyzedInstructions[0]?.steps.map(e => {
-                return {
-                    number: e.number,
-                    step: e.step
-                }
-            })
+            stepByStep: e.analyzedInstructions && e.analyzedInstructions[0] && e.analyzedInstructions[0].steps 
+                ? e.analyzedInstructions[0].steps.map(step => {
+                    return {
+                        number: step.number,
+                        step: step.step
+                    }
+                })
+                : [], // Si no hay `analyzedInstructions` o `steps`, devolvemos un array vacío
         }
-    })
-    console.log('API INFO -->', apiInfo);
-    return apiInfo
+    });
+
+    console.log('API INFO -->', cleanApiInfo);
+    return cleanApiInfo;
 }
 
 
