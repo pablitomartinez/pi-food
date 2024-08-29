@@ -4,17 +4,45 @@ const Recipe = require('../models/Recipe')
 
 
 //! busqueda inexacta con Op.iLike y un filter-includes
-const getRecipesApiHandler = async (req,res) => {
-    const {name} = req.query
+// const getRecipesApiHandler = async (req,res) => {
+//     const {name} = req.query
 
-    const recipes = name 
-    ? await searchRecipeByName(name) 
-    : await getAllRecipes();
+//     const recipes = name 
+//     ? await searchRecipeByName(name) 
+//     : await getAllRecipes();
 
-    res.status(200).send(recipes);
-    // res.status(400).send({error: error.message})
+//     res.status(200).send(recipes);
+//     // res.status(400).send({error: error.message})
 
-}
+// }
+
+// ? nueva funcion
+const getRecipesApiHandler = async (req, res) => {
+  const { name, diet } = req.query;
+
+  try {
+    let recipes = await getAllRecipes();
+
+    // Filtro por nombre
+    if (name) {
+      recipes = recipes.filter((recipe) =>
+        recipe.name.toLowerCase().includes(name.toLowerCase())
+      );
+    }
+
+    // Filtro por tipo de dieta
+    if (diet) {
+      recipes = recipes.filter((recipe) =>
+        recipe.diets.includes(diet.toLowerCase())
+      );
+    }
+
+    res.status(200).json(recipes);
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+};
+
 
 const getDbRecipesHandler = (req,res) => {
     res.status(200).send('traigo las recipes de la BD')

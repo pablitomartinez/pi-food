@@ -1,8 +1,8 @@
 // funciones que si interactuan con el modelo
-const { Recipe, Diet } = require('../db');
+const { Recipe, Diet } = require("../db");
+const mockRecipes = require('../data'); // Importa las recetas simuladas
 const axios = require("axios");
-const  apiKey  = process.env.SPOONACULAR_API_KEY;
-
+const apiKey = process.env.SPOONACULAR_API_KEY;
 
 // ? FUNCION NORMALIZADORA
 // const cleanArray = (arr)=>{
@@ -29,33 +29,34 @@ const  apiKey  = process.env.SPOONACULAR_API_KEY;
 //     return clean
 // }
 
-
 // ? nueva funcion normalizadora
 // ? FUNCION NORMALIZADORA
 const cleanArray = (arr) => {
-    const clean = arr.map(elem => {
-        return {
-            id: elem.id,
-            image: elem.image,
-            name: elem.title,
-            diets: elem.diets,
-            dishTypes: elem.dishTypes,
-            summary: elem.summary,
-            healthScore: elem.healthScore,
-            stepByStep: elem.analyzedInstructions && elem.analyzedInstructions[0] && elem.analyzedInstructions[0].steps
-                ? elem.analyzedInstructions[0].steps.map(e => {
-                    return {
-                        number: e.number,
-                        step: e.step
-                    }
-                })
-                : [],  // Devuelve un array vacío si no hay pasos
-            created: false
-        }
-    });
-    return clean;
-}
-
+  const clean = arr.map((elem) => {
+    return {
+      id: elem.id,
+      image: elem.image,
+      name: elem.title,
+      diets: elem.diets,
+      dishTypes: elem.dishTypes,
+      summary: elem.summary,
+      healthScore: elem.healthScore,
+      stepByStep:
+        elem.analyzedInstructions &&
+        elem.analyzedInstructions[0] &&
+        elem.analyzedInstructions[0].steps
+          ? elem.analyzedInstructions[0].steps.map((e) => {
+              return {
+                number: e.number,
+                step: e.step,
+              };
+            })
+          : [], // Devuelve un array vacío si no hay pasos
+      created: false,
+    };
+  });
+  return clean;
+};
 
 // TRAE RECETAS DE LA API
 // const getApiRecipes = async ()=>{
@@ -83,114 +84,126 @@ const cleanArray = (arr) => {
 // }
 // TRAE RECETAS DE LA API
 const getApiRecipes = async () => {
-    const apiInfo = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`)).data.results;
-    
-    const cleanApiInfo = apiInfo.map(e => {
-        return {
-            id: e.id,
-            image: e.image,
-            name: e.title,
-            diets: e.diets,
-            summary: e.summary,
-            score: e.spoonacularScore,
-            healthScore: e.healthScore,
-            dishTypes: e.dishTypes,
-            stepByStep: e.analyzedInstructions && e.analyzedInstructions[0] && e.analyzedInstructions[0].steps 
-                ? e.analyzedInstructions[0].steps.map(step => {
-                    return {
-                        number: step.number,
-                        step: step.step
-                    }
-                })
-                : [], // Si no hay `analyzedInstructions` o `steps`, devolvemos un array vacío
-        }
-    });
+//   const apiInfo = 
+//   (
+//     await axios.get(
+//       `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`
+//     )
+//   ).data.results;
 
-    console.log('API INFO -->', cleanApiInfo);
-    return cleanApiInfo;
-}
+const apiInfo = mockRecipes
 
+  const cleanApiInfo = apiInfo.map((e) => {
+    return {
+      id: e.id,
+      image: e.image,
+      name: e.title,
+      diets: e.diets,
+      summary: e.summary,
+      score: e.spoonacularScore,
+      healthScore: e.healthScore,
+      dishTypes: e.dishTypes,
+      stepByStep:
+        e.analyzedInstructions &&
+        e.analyzedInstructions[0] &&
+        e.analyzedInstructions[0].steps
+          ? e.analyzedInstructions[0].steps.map((step) => {
+              return {
+                number: step.number,
+                step: step.step,
+              };
+            })
+          : [], // Si no hay `analyzedInstructions` o `steps`, devolvemos un array vacío
+    };
+  });
+
+  console.log("API INFO -->", cleanApiInfo);
+  return cleanApiInfo;
+};
 
 // TRAE TODO
-//      API 
+//      API
 //      BD
-const getAllRecipes = async ()=>{
-    // BD
-    const recipesDb = await Recipe.findAll();
-    // API (crudo)
-    const recipesApiRaw = await getApiRecipes()
-    // console.log('RECETAS --->',recipesApiRaw);
-       
-    // ? FUNCION NORMALIZADORA
-    const recipesApi = cleanArray(recipesApiRaw)
-    // console.log(recipesApi);
+const getAllRecipes = async () => {
+  // BD
+  const recipesDb = await Recipe.findAll();
+  // API (crudo)
+  const recipesApiRaw = await getApiRecipes();
+  // console.log('RECETAS --->',recipesApiRaw);
 
-    const allRecipes = [...recipesDb, ...recipesApi]
+  // ? FUNCION NORMALIZADORA
+//   const recipesApi = cleanArray(recipesApiRaw);
+  // console.log(recipesApi);
 
-    return allRecipes
+  const allRecipes = [...recipesDb, ...recipesApiRaw];
+
+  return allRecipes;
 };
 
 // CREA RECETA EN BDz
-const createRecipe = async ( name, summary, healthScore, stepByStep,dietTypes )=>{
+const createRecipe = async (
+  name,
+  summary,
+  healthScore,
+  stepByStep,
+  dietTypes
+) => {
+  let newRecipe = await Recipe.create({
+    name,
+    summary,
+    healthScore,
+    stepByStep,
+  });
 
-    let newRecipe = await Recipe.create({
-        name, 
-        summary, 
-        healthScore, 
-        stepByStep});
+  let recipeDb = await Diet.findAll({
+    where: { name: dietTypes },
+  });
 
-    let recipeDb = await Diet.findAll({
-        where: {name: dietTypes}
-    })
-    
+  newRecipe.addDiet(recipeDb);
 
-    newRecipe.addDiet(recipeDb)
-
-    console.log('NUEVA RECETA',newRecipe);
-    return newRecipe;
-}
-
-// BUSCA POR ID
-const getRecipeById = async (id, source)=>{
-    // const recipesInArray = []
-    
-    const recipe = source === 'api' 
-    ? (await axios.get (`https://api.spoonacular.com/recipes/${id}/information?apiKey=${apiKey}`)).data
-
-    : await Recipe.findByPk(id);
-
-
-
-    // const recipeClean = cleanArray(recipe)
-    console.log('RECETAS POR ID',recipe);
-    return recipe
-}
-
-
-// busca por NAME
-const searchRecipeByName = async (name)=>{
-    const dataBaseRecipes = await Recipe.findAll({
-        where:{name}
-    })
-
-    const recipesApiRaw = await getAllRecipes();
-    const recipesByName = recipesApiRaw.filter(e => e.name === name)
-    console.log('RECIPES BY NAME --->',recipesByName);
-        // ? FUNCION NORMALIZADORA
-    // const recipesApi = cleanArray(recipesApiRaw)
-
-    // const filteredApi = recipesApi.filter((recipe)=> recipe.name === name)
-
-    // BASE DE DATOS & FILTER API
-    return [...dataBaseRecipes, ...recipesByName]
+  console.log("NUEVA RECETA", newRecipe);
+  return newRecipe;
 };
 
+// BUSCA POR ID
+const getRecipeById = async (id, source) => {
+  // const recipesInArray = []
 
+  const recipe =
+    source === "api"
+      ? (
+          await axios.get(
+            `https://api.spoonacular.com/recipes/${id}/information?apiKey=${apiKey}`
+          )
+        ).data
+      : await Recipe.findByPk(id);
+
+  // const recipeClean = cleanArray(recipe)
+  console.log("RECETAS POR ID", recipe);
+  return recipe;
+};
+
+// busca por NAME
+const searchRecipeByName = async (name) => {
+  const dataBaseRecipes = await Recipe.findAll({
+    where: { name },
+  });
+
+  const recipesApiRaw = await getAllRecipes();
+  const recipesByName = recipesApiRaw.filter((e) => e.name === name);
+  console.log("RECIPES BY NAME --->", recipesByName);
+  // ? FUNCION NORMALIZADORA
+  // const recipesApi = cleanArray(recipesApiRaw)
+
+  // const filteredApi = recipesApi.filter((recipe)=> recipe.name === name)
+
+  // BASE DE DATOS & FILTER API
+  return [...dataBaseRecipes, ...recipesByName];
+};
 
 module.exports = {
-    createRecipe,
-    getRecipeById,
-    searchRecipeByName, 
-    getAllRecipes,
-    
-}
+  createRecipe,
+  getRecipeById,
+  searchRecipeByName,
+  getAllRecipes,
+};
