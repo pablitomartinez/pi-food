@@ -4,7 +4,9 @@ export const GET_RECIPES = "GET_RECIPES";
 export const GET_RECIPE_DETAIL = "GET_RECIPE_DETAIL";
 export const GET_DIETS = "GET_DIETS";
 export const FILTER_BY_VALUE = "FILTER_BY_VALUE";
-export const SORTED_RECIPES = 'SORTED_RECIPES'
+export const SORTED_RECIPES = 'SORTED_RECIPES';
+export const FILTER_BY_DIET = "FILTER_BY_DIET";
+export const SORT_RECIPES = "SORT_RECIPES";
 
 
 export const getRecipes = ()=>{
@@ -12,6 +14,8 @@ export const getRecipes = ()=>{
         let apiData = await axios.get("http://localhost:3001/recipes")
         // console.log(apiData);
         const recipes = apiData.data;
+
+        console.log("Datos obtenidos de la API:", recipes);
 
         dispatch({
             type: GET_RECIPES,
@@ -71,5 +75,21 @@ export const sortedRecipesByName = (payload)=>{
         payload
     }
 }
+
+// Acción para filtrar recetas por tipo de dieta
+export const filterRecipesByDiet = (diet) => {
+  return {
+    type: FILTER_BY_DIET,
+    payload: diet,
+  };
+};
+
+// Acción para ordenar recetas
+export const sortRecipes = (order) => {
+  return {
+    type: SORT_RECIPES,
+    payload: order,
+  };
+};
 
 

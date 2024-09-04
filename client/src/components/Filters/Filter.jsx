@@ -1,67 +1,41 @@
-import filter from './Filter.module.css'
-import { filterRecipesaByStatus, sortedRecipesByName } from '../../redux/actions'
-import { useDispatch } from 'react-redux'
- 
+// Filter.jsx
+import React from "react";
+import { useDispatch } from "react-redux";
+import { filterRecipesByDiet, sortRecipes } from "../../redux/actions";
 
-const Filter = ({setCurrentPage, setOrder})=>{
+const Filter = ({ setCurrentPage, setOrder }) => {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
+  const handleFilterChange = (e) => {
+    dispatch(filterRecipesByDiet(e.target.value));
+    setCurrentPage(1);
+  };
 
-    const handlerFilter = (e)=>{
-        dispatch(filterRecipesaByStatus(e.target.value))
-    }
+  const handleSortChange = (e) => {
+    dispatch(sortRecipes(e.target.value));
+    setCurrentPage(1);
+    setOrder(`Ordenado de ${e.target.value}`);
+  };
 
-	const handlerSort = (e)=>{
-		
-        dispatch(sortedRecipesByName(e.target.value))
-		setCurrentPage(1)
-		setOrder(`Ordenado de ${e.target.value}`)
-    }
+  return (
+    <div>
+      <div>
+        <span>Sort:</span>
+        <select onChange={handleSortChange}>
+          <option value="asc">A-Z</option>
+          <option value="des">Z-A</option>
+        </select>
 
-    return(
-        <>
-            <div className={filter.filterSort}>
-				<div>
-					<span>Sort:</span>
-                    <select onChange={e => handlerSort(e)}>
-						<option value='asc'>A-Z</option>
-						<option value='des'>Z-A</option>
-					</select>
+        <span>Filter By Diet: </span>
+        <select onChange={handleFilterChange}>
+          <option value="All">All</option>
+          <option value="gluten free">Gluten Free</option>
+          <option value="dairy free">Dairy Free</option>
+          {/* Añade más opciones aquí según las dietas disponibles */}
+        </select>
+      </div>
+    </div>
+  );
+};
 
-					<span>Order: </span>
-					<select >
-						<option value='All'>All</option>
-						<option value='high'>High</option>
-						<option value='low'>Low</option>
-						<option value='setenta'>+70</option>
-					</select>
-							
-					<span>Filter By Diet: </span>
-					<select
-						className={filter.filterselect}
-                        onChange={e => handlerFilter(e)}
-					>
-						<option value='All'>All</option>
-						<option value='gluten free'>Gluten Free</option>
-						<option value='dairy free'>Ketogenic</option>
-						<option value='vegetarian'>Vegetarian</option>
-						<option value='lacto ovo vegetarian'>
-							Lacto-Vegetarian
-						</option>
-						<option value='lacto ovo vegetarian'>
-							Ovo-Vegetarian
-						</option>
-						<option value='vegan'>Vegan</option>
-						<option value='pescatarian'>Pescetarian</option>
-						<option value='paleolithic'>Paleo</option>
-						<option value='primal'>Primal</option>
-						<option value='whole 30'>Whole30</option>;
-					</select>
-
-				</div>
-            </div>
-        </>
-    )
-}
-
-export default Filter
+export default Filter;

@@ -3,6 +3,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const path = require("path"); 
 const routes = require("./routes/index.js");
 
 require("./db.js");
@@ -10,6 +11,7 @@ require("./db.js");
 const server = express();
 
 server.name = "API";
+
 
 server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 server.use(bodyParser.json({ limit: "50mb" }));
@@ -26,6 +28,10 @@ server.use((req, res, next) => {
   next();
 });
 
+// Servir archivos estáticos desde la carpeta uploads
+server.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+//RUTAS
 server.use("/", routes);
 
 // Error catching endware.

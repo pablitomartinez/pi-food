@@ -1,31 +1,35 @@
-import s from './Card.module.css'
-import { Link } from 'react-router-dom'
+import s from "./Card.module.css";
+import { Link } from "react-router-dom";
 
-const Card = (props)=>{
-  console.log(props);
-  return(
+const Card = ({ id, name, image, diets = [] }) => {
+  // Verificar si la imagen es relativa y construir la URL completa
+  const validImage =
+    image && image.startsWith("/uploads")
+      ? `http://localhost:3001${image}`
+      : image || "/default-image.png";
+
+  console.log("Card props:", { id, name, image, diets });
+
+  return (
     <div className={s.card}>
-        
-        <div className={s.front}>
-          <h3>{props.name}</h3>
-          <img src={props.image} alt={'no hay imagen de la receta'} />
-        </div>
-
-        
-        <div className={s.back}>
-          <h3>{props.name}</h3>
-          <h4>Tipos de Dietas:</h4>
-            {props.diets.map(e =>{
-              return(
-                  <li key={e}>{e}</li>
-              )
-          })}
-          <Link to={`/details/${props.id}`} >
-              <p>More Information</p>
-          </Link>
-        </div>
+      <img src={validImage} alt={name} className={s.image} />
+      <div className={s.content}>
+        <h3 className={s.title}>{name}</h3>
+        {/* Asegúrate de que diets sea un array antes de mapear */}
+        <ul className={s.diets}>
+          {Array.isArray(diets) &&
+            diets.map((diet) => (
+              <li key={diet.id || diet} className={s.diet}>
+                {typeof diet === "object" ? diet.name : diet}
+              </li>
+            ))}
+        </ul>
+        <Link to={`/details/${id}`} className={s.link}>
+          More Information
+        </Link>
+      </div>
     </div>
-  )  
-}
+  );
+};
 
-export default Card
+export default Card;

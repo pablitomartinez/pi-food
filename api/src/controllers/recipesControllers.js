@@ -1,6 +1,7 @@
 // funciones que si interactuan con el modelo
 const { Recipe, Diet } = require("../db");
-const mockRecipes = require('../data'); // Importa las recetas simuladas
+const { Op } = require("sequelize"); // Asegúrate de importar 'Op'
+// const mockRecipes = require('../data'); // Importa las recetas simuladas
 const axios = require("axios");
 const apiKey = process.env.SPOONACULAR_API_KEY;
 
@@ -84,14 +85,14 @@ const cleanArray = (arr) => {
 // }
 // TRAE RECETAS DE LA API
 const getApiRecipes = async () => {
-//   const apiInfo = 
-//   (
-//     await axios.get(
-//       `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`
-//     )
-//   ).data.results;
+  const apiInfo = 
+  (
+    await axios.get(
+      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`
+    )
+  ).data.results;
 
-const apiInfo = mockRecipes
+// const apiInfo = mockRecipes
 
   const cleanApiInfo = apiInfo.map((e) => {
     return {
@@ -124,46 +125,120 @@ const apiInfo = mockRecipes
 // TRAE TODO
 //      API
 //      BD
+// const getAllRecipes = async () => {
+//   // BD
+//   const recipesDb = await Recipe.findAll();
+//   // API (crudo)
+//   const recipesApiRaw = await getApiRecipes();
+//   // console.log('RECETAS --->',recipesApiRaw);
+
+//   // ? FUNCION NORMALIZADORA
+// //   const recipesApi = cleanArray(recipesApiRaw);
+//   // console.log(recipesApi);
+
+//   const allRecipes = [...recipesDb, ...recipesApiRaw];
+
+//   return allRecipes;
+// };
 const getAllRecipes = async () => {
   // BD
-  const recipesDb = await Recipe.findAll();
+  const recipesDb = await Recipe.findAll({
+    include: {
+      model: Diet,
+      attributes: ["name"], // Selecciona solo el nombre de las dietas
+      through: { attributes: [] }, // No incluir la tabla intermedia en el resultado
+    },
+  });
+
   // API (crudo)
   const recipesApiRaw = await getApiRecipes();
-  // console.log('RECETAS --->',recipesApiRaw);
-
-  // ? FUNCION NORMALIZADORA
-//   const recipesApi = cleanArray(recipesApiRaw);
-  // console.log(recipesApi);
 
   const allRecipes = [...recipesDb, ...recipesApiRaw];
 
   return allRecipes;
 };
 
-// CREA RECETA EN BDz
+
+// CREA RECETA EN BD
+// const createRecipe = async (
+//   name,
+//   summary,
+//   healthScore,
+//   stepByStep,
+//   dietTypes
+// ) => {
+//   // Convertir dietTypes a un array si es una cadena
+//   if (typeof dietTypes === "string") {
+//     dietTypes = dietTypes.split(","); // Separar por comas
+//   }
+
+//   // Verificar que todas las dietas sean válidas
+//   if (!dietTypes || dietTypes.length === 0) {
+//     throw new Error("El tipo de dieta no es válido o está vacío.");
+//   }
+
+//   let newRecipe = await Recipe.create({
+//     name,
+//     summary,
+//     healthScore,
+//     stepByStep,
+//   });
+
+//   let recipeDb = await Diet.findAll({
+//     where: { name: dietTypes }, // Busca dietas con estos nombres
+//   });
+
+//   newRecipe.addDiet(recipeDb);
+
+//   console.log("NUEVA RECETA", newRecipe);
+//   return newRecipe;
+// };
+
 const createRecipe = async (
   name,
   summary,
   healthScore,
   stepByStep,
-  dietTypes
+  dietTypes,
+  image
 ) => {
+  // Convertir dietTypes a un array si es una cadena
+  if (typeof dietTypes === "string") {
+    dietTypes = JSON.parse(dietTypes); // Asegúrate de parsear el JSON string
+  }
+
+  // Verificar que todas las dietas sean válidas
+  if (!dietTypes || dietTypes.length === 0) {
+    throw new Error("El tipo de dieta no es válido o está vacío.");
+  }
+
   let newRecipe = await Recipe.create({
     name,
     summary,
     healthScore,
     stepByStep,
+    image,
   });
 
   let recipeDb = await Diet.findAll({
-    where: { name: dietTypes },
+    where: { name: { [Op.in]: dietTypes } }, // Busca dietas con estos nombres
   });
 
-  newRecipe.addDiet(recipeDb);
+  if (recipeDb.length === 0) {
+    throw new Error("No se encontraron dietas válidas en la base de datos.");
+  }
+
+  await newRecipe.addDiets(recipeDb); // Cambiado a addDiets
 
   console.log("NUEVA RECETA", newRecipe);
   return newRecipe;
 };
+
+
+
+
+
+
 
 // BUSCA POR ID
 const getRecipeById = async (id, source) => {

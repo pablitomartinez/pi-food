@@ -65,25 +65,36 @@ const getRecipeByIdHandler = async (req,res) => {
     }
 }
 
-const createRecipeHandler = async (req,res) => {
-    let { name, 
-        summary, 
-        healthScore, 
-        stepByStep, 
-        dietTypes 
-    } = req.body
-    
-    try {
-        let newRecipe = await createRecipe( name, summary, healthScore, stepByStep, dietTypes)
-        
-        res.status(201).json(newRecipe)
-        console.log('NUEVA RECETA',newRecipe);
+const createRecipeHandler = async (req, res) => {
+  let { name, summary, healthScore, stepByStep, dietTypes } = req.body;
 
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({error: error.message})
-    }
-}
+  // Asegúrate de capturar el nombre del archivo de imagen subido
+  let image = req.file ? `/uploads/${req.file.filename}` : null;
+
+  try {
+    let newRecipe = await createRecipe(
+      name,
+      summary,
+      healthScore,
+      stepByStep,
+      dietTypes,
+      image
+    ); // Asegúrate de pasar 'image' aquí
+    res.status(201).json(newRecipe);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+
+
+
+
+
+
+
 
 module.exports = {
     getRecipesApiHandler, 
