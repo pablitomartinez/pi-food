@@ -1,20 +1,31 @@
 .container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Tres columnas en pantallas grandes */
-  background-color: rosybrown;
-  gap: 60px;
+  grid-template-columns: repeat(4, 1fr); /* Mostrar 4 columnas en pantallas más grandes */
+  gap: 30px; /* Espacio entre las tarjetas */
   margin: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos responsivos */
-@media (max-width: 768px) {
+/* Estilos para Desktop */
+@media (max-width: 1200px) { /* Desktop */
   .container {
-    grid-template-columns: repeat(2, 1fr); /* Dos columnas en tabletas */
+    grid-template-columns: repeat(3, 1fr); /* Mostrar 3 columnas en pantallas de escritorio */
   }
 }
 
-@media (max-width: 480px) {
+/* Estilos para Tablet */
+@media (max-width: 768px) { /* Tablet */
   .container {
-    grid-template-columns: 1fr; /* Una columna en móviles */
+    grid-template-columns: repeat(2, 1fr); /* Mostrar 2 columnas en pantallas de tablet */
+  }
+}
+
+/* Estilos para Móvil */
+@media (max-width: 480px) { /* Móvil */
+  .container {
+    grid-template-columns: 1fr; /* Mostrar 1 columna en pantallas de móviles */
   }
 }

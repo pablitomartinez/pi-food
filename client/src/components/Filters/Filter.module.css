@@ -1,30 +1,57 @@
-.filterSort {
+.filterContainer {
     display: flex;
-    justify-content: space-around;
+    justify-content: center; /* Centrar los filtros */
     align-items: center;
-    background-color: white;
-    height: 10vh;
-  }
-.filterSort option{
-    font-size:25px;
-}
-  
-.filterSort span {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    text-transform: uppercase;
-    font-size: 1.2rem;
-    margin-right: 0.3rem;
-  }
-  
-.filterSort select {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    text-transform: uppercase;
-    width: 5vw;
-    height: 4vh;
-    margin-right: 1.5rem;
-    border-radius: 5px;
+    background-color: #fff;
+    padding: 15px 30px; /* Espaciado */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    margin-bottom: 20px; /* Margen inferior */
+    gap: 40px; /* Espacio entre los elementos */
+    flex-wrap: wrap; /* Hacer que los elementos se envuelvan en responsive */
 }
 
-.filterselect {
-    width: 10vw !important;
+.filterItem {
+    display: flex;
+    flex-direction: column; /* Elementos en columna */
+    align-items: center;
+    gap: 5px; /* Espacio entre label y select */
+}
+
+.label {
+    font-family: 'Arial', sans-serif;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.select {
+    font-family: 'Arial', sans-serif;
+    font-size: 1em;
+    padding: 8px 15px; /* Padding */
+    border: 1px solid #ddd;
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #f8f8f8; /* Fondo */
+    cursor: pointer; /* Cursor pointer */
+    transition: all 0.3s ease; /* Transición suave */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+.select:hover {
+    border-color: #feb47b; /* Color de borde en hover */
+    background-color: #f0f0f0; /* Fondo en hover */
+}
+
+/* Diseño Responsive */
+@media (max-width: 768px) {
+    .filterContainer {
+        flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+        padding: 20px; /* Aumenta el padding */
+        gap: 20px; /* Espacio adicional entre elementos */
+    }
+
+    .select {
+        width: 100%; /* El select toma todo el ancho */
+        max-width: 300px; /* Ancho máximo */
+    }
 }

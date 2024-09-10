@@ -1,35 +1,46 @@
-.container{
-    background-color: whitesmoke;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; /* Permite desplazarse horizontalmente si es necesario */
+  white-space: nowrap;
 }
 
-ul{
-    display: flex;
-    justify-content: space-around;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 100px;
-    height: 50px;
-    line-height: 50px;
+ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  gap: 5px;
 }
 
-
-
-.container a {
-    text-align: center;
-    background-color: aqua;
-    font-size: 20px;
-    font-weight: 700;
-    transition: .2s linear;
-    border-radius: 50px;
+.container button {
+  display: inline-block;
+  text-align: center;
+  padding: 8px 12px;
+  background-color: #ffa500;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  border: none; /* Quitar el estilo del botón por defecto */
+  border-radius: 5px;
+  cursor: pointer; /* Añadir cursor de puntero */
+  transition: background-color 0.3s;
+  min-width: 35px;
 }
 
-.container a:hover{
-    color: white;
-    background-color: blueviolet;
+.container button:hover {
+  background-color: #ff7f50;
+}
+
+.container .active {
+  background-color: #ff4500;
+  pointer-events: none;
 }

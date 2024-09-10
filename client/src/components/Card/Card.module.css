@@ -23,23 +23,17 @@
 
 /* Estilos de la Card */
 .card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 300px; /* Máximo ancho para pantallas grandes */
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 10px auto; /* Margen automático para centrar */
-  overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transición suave */
 }
 
 .card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px); /* Efecto hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra más intensa en hover */
 }
+
 
 .image {
   width: 100%;

@@ -1,68 +1,60 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getRecipes, getRecipeDetail } from "../../redux/actions";
+import { getRecipes } from "../../redux/actions"; // Eliminé getRecipeDetail si no se usa
 import CardsContainer from "../../components/CardsContainer/CardsContainer";
 import Paginado from "../../components/Paginated/Paginado";
 import Filter from "../../components/Filters/Filter";
 
+const Home = () => {
+  const dispatch = useDispatch();
+  const allRecipes = useSelector((state) => state.recipes);
 
+  useEffect(() => {
+    dispatch(getRecipes());
+  }, [dispatch]); // Agregado dispatch como dependencia para evitar advertencias
 
-const Home =() =>{
-    const dispatch = useDispatch();
+  // -PAGINADO-
+  const [currentPage, setCurrentPage] = useState(1); // Página actual
+  const [recipeForPage] = useState(9); // Recetas por página
 
-    const allRecipes = useSelector(state => state.recipes) 
-    // console.log('ALL RECIPES', allRecipes);
-    
+  const indexOfLastRecipe = currentPage * recipeForPage; // Índice de la última receta
+  const indexOfFirstRecipe = indexOfLastRecipe - recipeForPage; // Índice de la primera receta
 
-    useEffect(()=>{
-        dispatch(getRecipes())
-    }, [])
+  const currentRecipes = allRecipes.slice(
+    indexOfFirstRecipe,
+    indexOfLastRecipe
+  ); // Recetas actuales para mostrar
 
+  // Estado para ordenar recetas
+  const [order, setOrder] = useState("");
 
-    // -PAGINADO-
-    // pag actual - set pag actual
-    const [currentPage, setCurrentPage] = useState(1);
-    //recetas por pag 9 
-    const [recipeForPage, setRecipeForPage] = useState(9)
-    // indice de la ultima receta ---> 9 * 1
-    const indexOfLastRecipe = currentPage * recipeForPage // 9
-    // indie de la primera receta
-    const indexOfFirstRecipe = indexOfLastRecipe - recipeForPage // 0
-    // recetas de la pagina actual
-        // 
-    const currentRecipes = allRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe)
-    // console.log('RECETAS ACTUALES-->',currentRecipes);
+  const paginado = (pagNumber) => {
+    setCurrentPage(pagNumber);
+  };
 
-    //estado con msj que setea el orden
-    const [order, setOrder] = useState('')
+  return (
+    <>
+      <Filter setCurrentPage={setCurrentPage} setOrder={setOrder} />
+      <Paginado
+        recipeForPage={recipeForPage}
+        allRecipes={allRecipes.length}
+        paginado={paginado}
+        currentPage={currentPage} // Prop adicional para identificar la página actual
+      />
+      <CardsContainer
+        currentRecipes={currentRecipes}
+        recipeForPage={recipeForPage}
+        allRecipes={allRecipes}
+        paginado={paginado}
+      />
+      <Paginado
+        recipeForPage={recipeForPage}
+        allRecipes={allRecipes.length}
+        paginado={paginado}
+        currentPage={currentPage} // Prop adicional para identificar la página actual
+      />
+    </>
+  );
+};
 
-    const paginado = (pagNumber) =>{
-        setCurrentPage(pagNumber)
-    }
-
-    // console.log('COMPONENTE PAGINADO',paginado);
-
-
-        // <Paginado 
-        //     recipeForPage={recipeForPage}
-        //     allRecipes = {allRecipes.length}
-        //     paginado= {paginado}
-        //     />
-    return(
-        <>
-        <Filter
-            setCurrentPage={setCurrentPage}
-            setOrder={setOrder}
-
-        />
-        <CardsContainer
-            currentRecipes={currentRecipes}
-            recipeForPage={recipeForPage}
-            allRecipes = {allRecipes}
-            paginado= {paginado}
-        />
-        </>
-    )
-}
-
-export default Home
+export default Home;

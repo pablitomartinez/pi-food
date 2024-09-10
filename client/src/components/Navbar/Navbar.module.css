@@ -1,7 +1,46 @@
-.container{
+.navbar {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    border: 1px solid black;
-    border-radius: 15px;
+    justify-content: space-between; /* Ajusta los elementos para que estén separados */
+    align-items: center; /* Centra verticalmente los elementos */
+    padding: 15px 30px; /* Padding para espaciar la navbar */
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradiente de fondo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para el efecto de elevación */
+    border-radius: 10px; /* Bordes redondeados */
+    margin: 20px; /* Margen alrededor de la navbar */
+}
+
+.logo img {
+    width: 100px; /* Tamaño del logo */
+    cursor: pointer;
+}
+
+.links {
+    display: flex;
+    gap: 30px; /* Espaciado entre los enlaces */
+}
+
+.link {
+    color: #fff; /* Color de texto */
+    text-decoration: none; /* Sin subrayado */
+    font-weight: bold; /* Negrita */
+    font-size: 1.1em; /* Tamaño de la fuente */
+    transition: color 0.3s ease; /* Transición suave */
+}
+
+.link:hover {
+    color: #f9f9f9; /* Cambio de color en hover */
+    text-decoration: underline; /* Subrayado en hover */
+}
+
+/* Diseño Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* Cambia la dirección de flex a columna */
+        padding: 10px; /* Ajusta el padding */
+    }
+
+    .links {
+        flex-direction: column; /* Cambia la dirección de flex a columna */
+        gap: 15px; /* Ajusta el espacio entre los enlaces */
+    }
 }
