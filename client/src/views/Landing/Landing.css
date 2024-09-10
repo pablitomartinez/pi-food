@@ -2,6 +2,8 @@
     font-family: 'Arial', sans-serif;
     text-align: center;
     padding: 20px;
+    min-height: 100vh; /* Ajuste mínimo de altura para pantallas más pequeñas */
+    overflow-y: auto; /* Permite desplazamiento si el contenido es demasiado largo */
 }
 
 .hero-section {
@@ -40,7 +42,22 @@
 }
 
 .recipes-container {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
+    display: grid; /* Utilizamos grid para el diseño */
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas en pantallas grandes */
+    gap: 10px;
+    padding: 10px;
+    justify-items: center; /* Centra las cards en el grid */
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .recipes-container {
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas medianas */
+    }
+}
+
+@media (max-width: 480px) {
+    .recipes-container {
+        grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+    }
 }

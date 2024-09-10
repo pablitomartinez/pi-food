@@ -1,16 +1,20 @@
-
-
-.container{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    background-color: rosybrown;
-    gap: 60px;
-    margin: 20px;
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Tres columnas en pantallas grandes */
+  background-color: rosybrown;
+  gap: 60px;
+  margin: 20px;
 }
 
-.cards{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas en tabletas */
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    grid-template-columns: 1fr; /* Una columna en móviles */
+  }
 }
