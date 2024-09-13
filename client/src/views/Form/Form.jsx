@@ -24,18 +24,34 @@ const Form = () => {
     dispatch(getDiets());
   }, [dispatch]);
 
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!form.name || form.name.length < 5) {
+      newErrors.name = "El nombre debe tener al menos 5 caracteres.";
+    }
+    if (!form.summary || form.summary.length < 10) {
+      newErrors.summary = "El resumen debe tener al menos 10 caracteres.";
+    }
+    if (!form.stepByStep || form.stepByStep.length < 10) {
+      newErrors.stepByStep =
+        "El paso a paso debe tener al menos 10 caracteres.";
+    }
+    if (!image) {
+      newErrors.image = "Debes subir una imagen del plato.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
 
-    // Validación en tiempo real
-    if (name === "name" && value.length < 5) {
-      setErrors({
-        ...errors,
-        name: "El nombre debe tener al menos 5 caracteres",
-      });
-    } else {
-      setErrors({ ...errors, name: "" });
+    // Eliminar el error cuando el usuario corrige el campo
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
     }
   };
 
@@ -64,10 +80,17 @@ const Form = () => {
     } else {
       setPreviewImage(null);
     }
+
+    // Eliminar el error cuando el usuario sube una imagen
+    if (errors.image) {
+      setErrors({ ...errors, image: "" });
+    }
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) return; // Si la validación falla, no enviar el formulario
 
     const formData = new FormData();
     formData.append("name", form.name);
@@ -90,286 +113,6 @@ const Form = () => {
   };
 
   return (
-    // <form className={f.container} onSubmit={submitHandler}>
-    //   <h2>Crea tu receta</h2>
-
-    //   {/* Primera columna */}
-    //   <div className="column">
-    //     {/* Sección de Información Básica */}
-    //     <div className={f.section}>
-    //       <h3>Información Básica</h3>
-    //       <div className={f.inputGroup}>
-    //         <label>Nombre del Plato:</label>
-    //         <input
-    //           type="text"
-    //           name="name"
-    //           value={form.name}
-    //           onChange={changeHandler}
-    //           className={errors.name ? f.errorInput : ""}
-    //         />
-    //         {errors.name && <p className={f.error}>{errors.name}</p>}
-    //       </div>
-
-    //       <div className={f.inputGroup}>
-    //         <label>Resumen del Plato:</label>
-    //         <textarea
-    //           name="summary"
-    //           value={form.summary}
-    //           onChange={changeHandler}
-    //         />
-    //       </div>
-    //     </div>
-
-    //     {/* Sección de Detalles de Salud y Preparación */}
-    //     <div className={f.section}>
-    //       <h3>Detalles de Preparación</h3>
-    //       <div className={f.inputGroup}>
-    //         <label>Puntaje de Salud:</label>
-    //         <input
-    //           type="range"
-    //           min="0"
-    //           max="100"
-    //           name="healthScore"
-    //           value={form.healthScore}
-    //           onChange={changeHandler}
-    //         />
-    //         <span>{form.healthScore}</span>
-    //       </div>
-
-    //       <div className={f.inputGroup}>
-    //         <label>Paso a paso:</label>
-    //         <textarea
-    //           name="stepByStep"
-    //           value={form.stepByStep}
-    //           onChange={changeHandler}
-    //         />
-    //       </div>
-    //     </div>
-
-    //     {/* Sección de Imagen */}
-    //     <div className={f.section}>
-    //       <h3>Imagen del Plato</h3>
-    //       <input type="file" onChange={handleImageChange} />
-    //       {previewImage && (
-    //         <img src={previewImage} alt="Preview" className={f.preview} />
-    //       )}
-    //     </div>
-    //   </div>
-
-    //   {/* Segunda columna */}
-    //   <div className="column">
-    //     {/* Sección de Tipos de Dieta */}
-    //     <div className={f.section}>
-    //       <h3>Tipos de Dieta</h3>
-    //       <div className={f.diets}>
-    //         {diets.length > 0 &&
-    //           diets.map((diet) => (
-    //             <label key={diet}>
-    //               <input
-    //                 type="checkbox"
-    //                 name={diet}
-    //                 onChange={handleChecked}
-    //                 checked={form.diets.includes(diet)}
-    //               />
-    //               {diet}
-    //             </label>
-    //           ))}
-    //       </div>
-    //     </div>
-    //   </div>
-
-    //   {/* Botón de Envío */}
-    //   <button type="submit" className={f.submitButton}>
-    //     CREAR RECETA
-    //   </button>
-    // </form>
-    // <form className={f.container} onSubmit={submitHandler}>
-    //   <h2>Crea tu receta</h2>
-
-    //   {/* Primera columna con la información básica */}
-    //   <div className="column">
-    //     {/* Sección de Información Básica */}
-    //     <div className={f.section}>
-    //       <h3>Información Básica</h3>
-    //       <div className={f.inputGroup}>
-    //         <label>Nombre del Plato:</label>
-    //         <input
-    //           type="text"
-    //           name="name"
-    //           value={form.name}
-    //           onChange={changeHandler}
-    //           className={errors.name ? f.errorInput : ""}
-    //         />
-    //         {errors.name && <p className={f.error}>{errors.name}</p>}
-    //       </div>
-
-    //       <div className={f.inputGroup}>
-    //         <label>Resumen del Plato:</label>
-    //         <textarea
-    //           name="summary"
-    //           value={form.summary}
-    //           onChange={changeHandler}
-    //         />
-    //       </div>
-    //     </div>
-
-    //     {/* Sección de Detalles de Salud y Preparación */}
-    //     <div className={f.section}>
-    //       <h3>Detalles de Preparación</h3>
-    //       <div className={f.inputGroup}>
-    //         <label>Puntaje de Salud:</label>
-    //         <input
-    //           type="range"
-    //           min="0"
-    //           max="100"
-    //           name="healthScore"
-    //           value={form.healthScore}
-    //           onChange={changeHandler}
-    //         />
-    //         <span>{form.healthScore}</span>
-    //       </div>
-
-    //       <div className={f.inputGroup}>
-    //         <label>Paso a paso:</label>
-    //         <textarea
-    //           name="stepByStep"
-    //           value={form.stepByStep}
-    //           onChange={changeHandler}
-    //         />
-    //       </div>
-    //     </div>
-
-    //     {/* Sección de Imagen */}
-    //     <div className={f.section}>
-    //       <h3>Imagen del Plato</h3>
-    //       <input type="file" onChange={handleImageChange} />
-    //       {previewImage && (
-    //         <img src={previewImage} alt="Preview" className={f.preview} />
-    //       )}
-    //     </div>
-    //   </div>
-
-    //   {/* Segunda columna con Tipos de Dieta */}
-    //   <div className="column">
-    //     <div className={f.section}>
-    //       <h3>Tipos de Dieta</h3>
-    //       <div className={f.diets}>
-    //         {diets.length > 0 &&
-    //           diets.map((diet) => (
-    //             <label key={diet}>
-    //               <input
-    //                 type="checkbox"
-    //                 name={diet}
-    //                 onChange={handleChecked}
-    //                 checked={form.diets.includes(diet)}
-    //               />
-    //               {diet}
-    //             </label>
-    //           ))}
-    //       </div>
-    //     </div>
-    //   </div>
-
-    //   {/* Botón de Envío centrado */}
-    //   <button type="submit" className={f.submitButton}>
-    //     CREAR RECETA
-    //   </button>
-    // </form>
-    // <>
-    //   <h2>Crea tu receta</h2>
-    // <form className={f.container} onSubmit={submitHandler}>
-
-    //   {/* Columna izquierda: Información Básica y Detalles de Preparación */}
-    //   <div className="column">
-    //     {/* Sección de Información Básica */}
-    //     <div className={f.section}>
-    //       <h3>Información Básica</h3>
-    //       <div className={f.inputGroup}>
-    //         <label>Nombre del Plato:</label>
-    //         <input
-    //           type="text"
-    //           name="name"
-    //           value={form.name}
-    //           onChange={changeHandler}
-    //           className={errors.name ? f.errorInput : ""}
-    //         />
-    //         {errors.name && <p className={f.error}>{errors.name}</p>}
-    //       </div>
-
-    //       <div className={f.inputGroup}>
-    //         <label>Resumen del Plato:</label>
-    //         <textarea
-    //           name="summary"
-    //           value={form.summary}
-    //           onChange={changeHandler}
-    //         />
-    //       </div>
-    //     </div>
-
-    //     {/* Sección de Detalles de Preparación */}
-    //     <div className={f.section}>
-    //       <h3>Detalles de Preparación</h3>
-    //       <div className={f.inputGroup}>
-    //         <label>Puntaje de Salud:</label>
-    //         <input
-    //           type="range"
-    //           min="0"
-    //           max="100"
-    //           name="healthScore"
-    //           value={form.healthScore}
-    //           onChange={changeHandler}
-    //         />
-    //         <span>{form.healthScore}</span>
-    //       </div>
-
-    //       <div className={f.inputGroup}>
-    //         <label>Paso a paso:</label>
-    //         <textarea
-    //           name="stepByStep"
-    //           value={form.stepByStep}
-    //           onChange={changeHandler}
-    //         />
-    //       </div>
-    //     </div>
-
-    //     {/* Sección de Imagen */}
-    //     <div className={f.section}>
-    //       <h3>Imagen del Plato</h3>
-    //       <input type="file" onChange={handleImageChange} />
-    //       {previewImage && (
-    //         <img src={previewImage} alt="Preview" className={f.preview} />
-    //       )}
-    //     </div>
-    //   </div>
-
-    //   {/* Columna derecha: Tipos de Dieta */}
-    //   <div className="column">
-    //     <div className={f.section}>
-    //       <h3>Tipos de Dieta</h3>
-    //       <div className={f.diets}>
-    //         {diets.length > 0 &&
-    //           diets.map((diet) => (
-    //             <label key={diet}>
-    //               <input
-    //                 type="checkbox"
-    //                 name={diet}
-    //                 onChange={handleChecked}
-    //                 checked={form.diets.includes(diet)}
-    //               />
-    //               {diet}
-    //             </label>
-    //           ))}
-    //       </div>
-    //     </div>
-    //   </div>
-
-    //   {/* Botón de Envío centrado */}
-    //   <button type="submit" className={f.submitButton}>
-    //     CREAR RECETA
-    //   </button>
-    // </form>
-    // </>
-
     <form className={f.container} onSubmit={submitHandler}>
       <h2>Crea tu receta</h2>
 
@@ -397,7 +140,9 @@ const Form = () => {
                 name="summary"
                 value={form.summary}
                 onChange={changeHandler}
+                className={errors.summary ? f.errorInput : ""}
               />
+              {errors.summary && <p className={f.error}>{errors.summary}</p>}
             </div>
           </div>
 
@@ -423,7 +168,11 @@ const Form = () => {
                 name="stepByStep"
                 value={form.stepByStep}
                 onChange={changeHandler}
+                className={errors.stepByStep ? f.errorInput : ""}
               />
+              {errors.stepByStep && (
+                <p className={f.error}>{errors.stepByStep}</p>
+              )}
             </div>
           </div>
 
@@ -434,6 +183,7 @@ const Form = () => {
             {previewImage && (
               <img src={previewImage} alt="Preview" className={f.preview} />
             )}
+            {errors.image && <p className={f.error}>{errors.image}</p>}
           </div>
         </div>
 

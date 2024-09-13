@@ -9,7 +9,7 @@ const CardsContainer = ({
   paginado,
 }) => {
   const recipes = useSelector((state) => state.recipes);
-  // console.log('current recipes-->', currentRecipes);
+  console.log('current recipes-->', currentRecipes);
 
   return (
     <div className={s.cards}>
