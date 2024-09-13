@@ -15,10 +15,16 @@ const Card = ({ id, name, image, diets = [] }) => {
         <h3 className={s.title}>{name}</h3>
         {/* Etiquetas de dietas */}
         <div className={s.dietTags}>
-          {Array.isArray(diets) &&
+          {/* {Array.isArray(diets) &&
             diets.map((diet) => (
               <span key={diet} className={s.dietTag}>
                 {diet}
+              </span>
+            ))} */}
+          {Array.isArray(diets) &&
+            diets.map((diet) => (
+              <span key={diet.name} className={s.dietTag}>
+                {diet.name}
               </span>
             ))}
         </div>

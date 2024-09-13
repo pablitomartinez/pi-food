@@ -1,14 +1,18 @@
 //exporto funciones controladoras.. controllers
-const {createRecipe, getRecipeById, searchRecipeByName, getAllRecipes} = require('../controllers/recipesControllers')
-const Recipe = require('../models/Recipe')
-
+const {
+  createRecipe,
+  getRecipeById,
+  searchRecipeByName,
+  getAllRecipes,
+} = require("../controllers/recipesControllers");
+const Recipe = require("../models/Recipe");
 
 //! busqueda inexacta con Op.iLike y un filter-includes
 // const getRecipesApiHandler = async (req,res) => {
 //     const {name} = req.query
 
-//     const recipes = name 
-//     ? await searchRecipeByName(name) 
+//     const recipes = name
+//     ? await searchRecipeByName(name)
 //     : await getAllRecipes();
 
 //     res.status(200).send(recipes);
@@ -43,27 +47,24 @@ const getRecipesApiHandler = async (req, res) => {
   }
 };
 
+const getDbRecipesHandler = (req, res) => {
+  res.status(200).send("traigo las recipes de la BD");
+};
 
-const getDbRecipesHandler = (req,res) => {
-    res.status(200).send('traigo las recipes de la BD')
-}
-
-
-// id---> númericos & alfanúmericos  
+// id---> númericos & alfanúmericos
 // id---> puede llegar in ID inexistente
-const getRecipeByIdHandler = async (req,res) => {
-    const {id} = req.params;
-    
-    const source = isNaN(id) ? 'bdd' : 'api';
-    
-    try {
-        const recipe = await getRecipeById(id, source);
-        res.status(200).send(recipe);
-    } catch (error) {
-        res.status(400).json({error: error.message});
-        
-    }
-}
+const getRecipeByIdHandler = async (req, res) => {
+  const { id } = req.params;
+
+  const source = isNaN(id) ? "bdd" : "api";
+
+  try {
+    const recipe = await getRecipeById(id, source);
+    res.status(200).send(recipe);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 const createRecipeHandler = async (req, res) => {
   let { name, summary, healthScore, stepByStep, dietTypes } = req.body;
@@ -87,18 +88,9 @@ const createRecipeHandler = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
 module.exports = {
-    getRecipesApiHandler, 
-    getDbRecipesHandler, 
-    getRecipeByIdHandler, 
-    createRecipeHandler
-}
+  getRecipesApiHandler,
+  getDbRecipesHandler,
+  getRecipeByIdHandler,
+  createRecipeHandler,
+};

@@ -85,14 +85,13 @@ const cleanArray = (arr) => {
 // }
 // TRAE RECETAS DE LA API
 const getApiRecipes = async () => {
-  const apiInfo = 
-  (
+  const apiInfo = (
     await axios.get(
       `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`
     )
   ).data.results;
 
-// const apiInfo = mockRecipes
+  // const apiInfo = mockRecipes
 
   const cleanApiInfo = apiInfo.map((e) => {
     return {
@@ -157,7 +156,6 @@ const getAllRecipes = async () => {
 
   return allRecipes;
 };
-
 
 // CREA RECETA EN BD
 // const createRecipe = async (
@@ -233,12 +231,6 @@ const createRecipe = async (
   console.log("NUEVA RECETA", newRecipe);
   return newRecipe;
 };
-
-
-
-
-
-
 
 // BUSCA POR ID
 const getRecipeById = async (id, source) => {
