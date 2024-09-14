@@ -139,20 +139,45 @@ const getApiRecipes = async () => {
 
 //   return allRecipes;
 // };
+// const getAllRecipes = async () => {
+//   // BD
+//   const recipesDb = await Recipe.findAll({
+//     include: {
+//       model: Diet,
+//       attributes: ["name"], // Selecciona solo el nombre de las dietas
+//       through: { attributes: [] }, // No incluir la tabla intermedia en el resultado
+//     },
+//   });
+
+//   // API (crudo)
+//   const recipesApiRaw = await getApiRecipes();
+
+//   const allRecipes = [...recipesDb, ...recipesApiRaw];
+
+//   return allRecipes;
+// };
+// Obtener todas las recetas (API + BD)
 const getAllRecipes = async () => {
-  // BD
+  // Obtener recetas de la base de datos
   const recipesDb = await Recipe.findAll({
     include: {
       model: Diet,
-      attributes: ["name"], // Selecciona solo el nombre de las dietas
-      through: { attributes: [] }, // No incluir la tabla intermedia en el resultado
+      attributes: ["name"], // Incluye solo el nombre de las dietas
+      through: { attributes: [] }, // No incluir atributos de la tabla intermedia
     },
   });
 
-  // API (crudo)
+  // Formatear las recetas de la base de datos para que las `diets` sean un array de strings
+  const formattedDbRecipes = recipesDb.map((recipe) => ({
+    ...recipe.toJSON(),
+    diets: recipe.diets.map((diet) => diet.name.toLowerCase()), // Convertir a strings en minúsculas
+  }));
+
+  // Obtener recetas de la API
   const recipesApiRaw = await getApiRecipes();
 
-  const allRecipes = [...recipesDb, ...recipesApiRaw];
+  // Combinar recetas de la BD y la API
+  const allRecipes = [...formattedDbRecipes, ...recipesApiRaw];
 
   return allRecipes;
 };
@@ -192,6 +217,7 @@ const getAllRecipes = async () => {
 //   return newRecipe;
 // };
 
+// Crear una nueva receta
 const createRecipe = async (
   name,
   summary,
@@ -200,17 +226,17 @@ const createRecipe = async (
   dietTypes,
   image
 ) => {
-  // Convertir dietTypes a un array si es una cadena
+  // Asegurarnos de que dietTypes es un array de strings
   if (typeof dietTypes === "string") {
-    dietTypes = JSON.parse(dietTypes); // Asegúrate de parsear el JSON string
+    dietTypes = JSON.parse(dietTypes); // Convertir JSON string a array si es necesario
   }
 
-  // Verificar que todas las dietas sean válidas
-  if (!dietTypes || dietTypes.length === 0) {
+  if (!dietTypes || !Array.isArray(dietTypes) || dietTypes.length === 0) {
     throw new Error("El tipo de dieta no es válido o está vacío.");
   }
 
-  let newRecipe = await Recipe.create({
+  // Crear la receta en la base de datos
+  const newRecipe = await Recipe.create({
     name,
     summary,
     healthScore,
@@ -218,15 +244,17 @@ const createRecipe = async (
     image,
   });
 
-  let recipeDb = await Diet.findAll({
-    where: { name: { [Op.in]: dietTypes } }, // Busca dietas con estos nombres
+  // Buscar dietas en la base de datos por nombre y asociarlas con la receta
+  const recipeDiets = await Diet.findAll({
+    where: { name: { [Op.in]: dietTypes.map((diet) => diet.toLowerCase()) } },
   });
 
-  if (recipeDb.length === 0) {
+  if (recipeDiets.length === 0) {
     throw new Error("No se encontraron dietas válidas en la base de datos.");
   }
 
-  await newRecipe.addDiets(recipeDb); // Cambiado a addDiets
+  // Asociar dietas a la receta
+  await newRecipe.addDiets(recipeDiets);
 
   console.log("NUEVA RECETA", newRecipe);
   return newRecipe;
