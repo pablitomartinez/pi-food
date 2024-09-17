@@ -113,15 +113,17 @@ const Form = () => {
   };
 
   return (
-    <form className={f.container} onSubmit={submitHandler}>
+    <div className={f.container} onSubmit={submitHandler} >
       <h2>Crea tu receta</h2>
 
-      <div className="form-columns">
+      {/* Contenedor para las dos columnas */}
+      <div className={f.formColumns}>
         {/* Columna izquierda: Información Básica y Detalles de Preparación */}
-        <div className="column">
+        <div className={f.column}>
           {/* Sección de Información Básica */}
           <div className={f.section}>
             <h3>Información Básica</h3>
+            {/* Input del nombre del plato */}
             <div className={f.inputGroup}>
               <label>Nombre del Plato:</label>
               <input
@@ -133,7 +135,7 @@ const Form = () => {
               />
               {errors.name && <p className={f.error}>{errors.name}</p>}
             </div>
-
+            {/* Input del resumen */}
             <div className={f.inputGroup}>
               <label>Resumen del Plato:</label>
               <textarea
@@ -149,6 +151,7 @@ const Form = () => {
           {/* Sección de Detalles de Preparación */}
           <div className={f.section}>
             <h3>Detalles de Preparación</h3>
+            {/* Input del puntaje de salud */}
             <div className={f.inputGroup}>
               <label>Puntaje de Salud:</label>
               <input
@@ -161,7 +164,7 @@ const Form = () => {
               />
               <span>{form.healthScore}</span>
             </div>
-
+            {/* Input del paso a paso */}
             <div className={f.inputGroup}>
               <label>Paso a paso:</label>
               <textarea
@@ -188,7 +191,7 @@ const Form = () => {
         </div>
 
         {/* Columna derecha: Tipos de Dieta */}
-        <div className="column">
+        <div className={f.column}>
           <div className={f.section}>
             <h3>Tipos de Dieta</h3>
             <div className={f.diets}>
@@ -213,7 +216,7 @@ const Form = () => {
       <button type="submit" className={f.submitButton}>
         CREAR RECETA
       </button>
-    </form>
+    </div>
   );
 };
 
