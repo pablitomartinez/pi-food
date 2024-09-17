@@ -87,7 +87,7 @@ const cleanArray = (arr) => {
 const getApiRecipes = async () => {
   const apiInfo = (
     await axios.get(
-      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=100`
+      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true&number=50`
     )
   ).data.results;
 

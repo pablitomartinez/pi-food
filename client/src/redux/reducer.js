@@ -55,6 +55,8 @@ const rootReducer = (state = initialState, action) => {
           return b.name.localeCompare(a.name); // Orden alfabético descendente
         }
       });
+      console.log('RECETAS ORDENADAS',sortedRecipes);
+      
       return {
         ...state,
         recipes: sortedRecipes, // Actualizamos el estado con las recetas ordenadas

@@ -1,7 +1,7 @@
 // Filter.jsx
 import React from "react";
 import { useDispatch } from "react-redux";
-import { filterRecipesByDiet, sortRecipes } from "../../redux/actions";
+import { filterRecipesByDiet, sortRecipes, getRecipes } from "../../redux/actions";
 import s from "./Filter.module.css"; // Importa el archivo CSS
 
 const Filter = ({ setCurrentPage, setOrder }) => {
@@ -13,16 +13,25 @@ const Filter = ({ setCurrentPage, setOrder }) => {
   };
 
   const handleSortChange = (e) => {
-    dispatch(sortRecipes(e.target.value));
+    const sortType = e.target.value;
+
+    if (sortType === "none") {
+      // Restablecer al estado original sin orden
+      dispatch(getRecipes());
+    } else {
+      dispatch(sortRecipes(sortType));
+    }
+
     setCurrentPage(1);
-    setOrder(`Ordenado de ${e.target.value}`);
+    setOrder(`Ordenado de ${sortType}`);
   };
 
   return (
     <div className={s.filterContainer}>
       <div className={s.filterItem}>
-        <label className={s.label}>Ordenar:</label>
+        <label className={s.label}>Ordenar Alfabéticamente :</label>
         <select className={s.select} onChange={handleSortChange}>
+          <option value="none">Sin Orden</option> {/* Nueva opción agregada */}
           <option value="asc">A-Z</option>
           <option value="des">Z-A</option>
         </select>
